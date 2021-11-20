@@ -3,9 +3,10 @@
 E-Health is a small API Microservice project for people to register into and get information about Covid-19. This project was created as a group assignment in the course PV217 Software Oriented Architecture.
 
 Team members:
-*Mr.Yanno Ban 528066*
-*Ms.Karolina Kokuchova 456120*
-*Michal Hazdra 469081*
+
+- Mr.Yanno Ban *(528066)*
+- Ms.Karolina Kokuchova *(456120)*
+- Michal Hazdra *(469081)*
 
 ## Patient Service
 
@@ -16,8 +17,8 @@ Team members:
 ## Vaccination Certificate Service
 
 - NewCertificate()
-- UpdateCerticate()
-- GetPatientCerticate()
+- UpdateCertificate()
+- GetPatientCertificate()
 
 # Technical Requirement
 
