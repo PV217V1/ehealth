@@ -43,11 +43,10 @@ public class EHealthResource {
 
 	@POST
 	@Transactional
-	public Response create(Patient patient) {
-		// TODO some validation
-		patient.persist();
-
-		return Response.ok(patient).status(201).build();
+	public Uni<Response> create(Patient patient) {
+		// TODO: Some validation
+		return Panache.<Patient>withTransaction(patient::persist).onItem().transform(it ->
+				Response.ok(patient).status(201).build());
 	}
 
 	@PUT
