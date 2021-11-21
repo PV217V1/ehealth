@@ -4,9 +4,9 @@ services:
 
   postgres-restrictions:
     image: postgres:14.0
-    container_name: postgres
+    container_name: postgres-restrictions
     ports:
-      - "5432:5432"
+      - "${RESTRICTIONS_POSTGRES_PORT}:5432"
     environment:
       - POSTGRES_PASSWORD=pass
     volumes:
