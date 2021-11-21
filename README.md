@@ -1,28 +1,30 @@
 # E-health Project
 
-E-Health is a small API Microservice project for people to register into and get information about Covid-19. This project was created as a group assignment in the course PV217 Software Oriented Architecture.
+E-Health is a small API Microservice project for people to register into and get information about Covid-19.
+This project was created as a group assignment in the course PV217 Software Oriented Architecture.
 
-Team members:
+### Team members:
 
 - Mr.Yanno Ban *(528066)*
 - Ms.Karolina Kokuchova *(456120)*
-- Michal Hazdra *(469081)*
+- Michal Hazdra *(469081)* 
 
-## Patient Service
+## Overview
 
-- NewRegistration()
-- UpdatePatient(...)
-- GetPatientInfo(..)
+Each microservice project has a separate README that contains project specific information.
 
-## Vaccination Certificate Service
+Each project exposes the following endpoints:
 
-- NewCertificate()
-- UpdateCertificate()
-- GetPatientCertificate()
+### OpenAPI
+> /openapi
 
-# Technical Requirement
+provides OpenAPI specification document
 
-We are using the Quarkus framwork developed by Red Hat. https://quarkus.io
+> /openapi-ui
+
+provides Swagger UI endpoint (also included in release configuration for simplicity)
+
+## Technical Requirement
 
 + For the implementation, try to keep with the technology stack presented during the lecture Quarkus, Docker/Podman, etc... All the following points will be covered during the block lectures:
 
