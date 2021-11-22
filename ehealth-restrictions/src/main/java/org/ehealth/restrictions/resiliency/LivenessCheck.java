@@ -1,4 +1,4 @@
-package org.ehealth.restrictions;
+package org.ehealth.restrictions.resiliency;
 
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
