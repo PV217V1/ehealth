@@ -1,5 +1,6 @@
 package org.ehealth.restrictions.resources;
 
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
 import org.ehealth.restrictions.entities.Restriction;
@@ -12,6 +13,7 @@ import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
 import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
 import org.ehealth.restrictions.processing.RestrictionProcessor;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -48,44 +50,77 @@ public class RestrictionsResource {
 	@POST
 	@Path("/create")
 	@Transactional
-	public Restriction create(Restriction item) {
+	public Response create(Restriction item) {
 		item.persist();
-		return item;
+		return Response.accepted(item)
+				.status(Response.Status.CREATED)
+				.build();
 	}
 
 	@GET
 	@Path("")
-	public List<Restriction> retrieveAll() {
-		return Restriction.listAll();
+	public Response retrieveAll() {
+		return Response.ok(Restriction.listAll())
+				.build();
 	}
 
 	@GET
 	@Path("/scoped/{scope}")
-	public List<Restriction> retrieveAll(@PathParam RestrictionScope scope) {
-		return Restriction.find("scope", scope).list();
+	public Response retrieveAll(@PathParam RestrictionScope scope) {
+		return Response.ok(Restriction.find("scope", scope).list())
+				.build();
 	}
 
 	@GET
 	@Path("/{id}")
-	public Restriction retrieve(@PathParam Long id) {
-		return Restriction.findById(id);
+	public Response retrieve(@PathParam Long id) {
+		return Response.ok(Restriction.findById(id))
+				.build();
 	}
 
 
 	@GET
 	@Path("/forUser/{id}")
-	public List<Restriction> forUser(@PathParam Long id) {
+	@Fallback(fallbackMethod = "forUserFallback")
+	public Response forUser(@PathParam Long id) {
 		PatientDTO p = patients.findById(id);
-		List<MedCertificateDTO> medCerts = certs.findByPatientId(id);
-		List<MedTestDTO> medTests = tests.findByPatientId(id);
-		return restrictionProcessor.process(new PatientMedRecord(p, medCerts, medTests));
+		List<MedCertificateDTO> medCerts;
+		List<MedTestDTO> medTests;
+
+		try {
+			medCerts = certs.findByPatientId(id);
+		}
+		catch (Exception e) {
+			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
+					status(Response.Status.SERVICE_UNAVAILABLE)
+					.build();
+		}
+
+		try {
+			medTests = tests.findByPatientId(id);
+		}
+		catch (Exception e) {
+			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
+					status(Response.Status.SERVICE_UNAVAILABLE)
+					.build();
+		}
+
+		return Response.ok(restrictionProcessor.process(new PatientMedRecord(p, medCerts, medTests)))
+				.build();
 	}
 
 	@DELETE
 	@Path("delete")
 	@Transactional
-	public Response delete(Long id) {
+	public Response delete(@QueryParam Long id) {
 		boolean res = Restriction.deleteById(id);
 		return res ? Response.ok().build() : Response.noContent().build();
+	}
+
+	// Used as a fallback method
+	@SuppressWarnings("unused")
+	public Response forUserFallback(Long id) {
+		return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+				.build();
 	}
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RestrictionProcessor {
 	List<Restriction> process(PatientMedRecord record);
+
+	List<Restriction> getGlobalRestrictions();
 }
