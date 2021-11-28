@@ -18,6 +18,10 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.VACCINATED))
 					.list();
 		}
+		if (!record.tests.isEmpty()) {
+			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.TESTED))
+					.list();
+		}
 
 		// When none of the cases apply you have to obey all the restrictions
 		return Restriction.find(scopeQuery(RestrictionScope.values()))

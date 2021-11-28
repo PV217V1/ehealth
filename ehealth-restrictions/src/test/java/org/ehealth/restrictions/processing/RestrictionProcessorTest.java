@@ -5,6 +5,7 @@ import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
 import org.ehealth.restrictions.endpoints.dto.certificates.MedCertificateDTO;
+import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
 import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.entities.RestrictionScope;
@@ -54,7 +55,7 @@ public class RestrictionProcessorTest {
 	}
 
 	@Test
-	void retrieveNonVaccinatedRestrictions() {
+	void retrieveNonVaccinatedORPostContractionRestrictions() {
 		Restriction.persist(getRestrictions());
 
 		PatientMedRecord record = getPatientRecord();
@@ -62,6 +63,18 @@ public class RestrictionProcessorTest {
 		List<Restriction> processed = processor.process(record);
 
 		assertContains(processed, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+	}
+
+	@Test
+	void retrieveTestedRestrictions() {
+		Restriction.persist(getRestrictions());
+
+		PatientMedRecord record = getPatientRecord();
+		record.tests = List.of(new MedTestDTO());
+
+		List<Restriction> processed = processor.process(record);
+
+		assertContains(processed, 1, 2, 3, 13, 14, 15);
 	}
 
 	private void assertContains(List<Restriction> globals, Integer... titles) {
