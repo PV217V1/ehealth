@@ -15,6 +15,11 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 	@Override
 	@NotNull
 	public List<Restriction> process(PatientMedRecord record) {
+		if(!record.certificates.isEmpty()){
+			return Restriction.find("scope = :scope1 or scope = :scope2",
+					Map.of("scope1", RestrictionScope.GLOBAL, "scope2", RestrictionScope.VACCINATED))
+					.list();
+		}
 		return List.of();
 	}
 

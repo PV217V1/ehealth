@@ -3,6 +3,9 @@ package org.ehealth.restrictions.processing;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
+import org.ehealth.restrictions.endpoints.dto.certificates.MedCertificateDTO;
+import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.entities.RestrictionScope;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +39,18 @@ public class RestrictionProcessorTest {
 		List<Restriction> globals = processor.getGlobalRestrictions();
 
 		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3");
+	}
+
+	@Test
+	void retrieveVaccinatedRestrictions() {
+		Restriction.persist(getRestrictions());
+
+		PatientMedRecord record = getPatientRecord();
+		record.certificates = List.of(new MedCertificateDTO());
+
+		List<Restriction> globals = processor.process(record);
+
+		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3", "10", "11", "12");
 	}
 
 	List<Restriction> getRestrictions() {
@@ -86,5 +101,14 @@ public class RestrictionProcessorTest {
 						LocalDate.of(2021, Month.APRIL, 20),
 						LocalDate.of(2021, Month.MAY, 20), RestrictionScope.TESTED)
 		);
+	}
+
+	private PatientMedRecord getPatientRecord() {
+		PatientDTO patient = new PatientDTO();
+		patient.name = "John";
+		patient.age = 28;
+		patient.address = "Some Address";
+		patient.phoneNum = "012345678";
+		return new PatientMedRecord(patient,List.of(), List.of());
 	}
 }
