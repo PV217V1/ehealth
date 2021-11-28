@@ -38,7 +38,7 @@ public class RestrictionProcessorTest {
 
 		List<Restriction> globals = processor.getGlobalRestrictions();
 
-		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3");
+		assertContains(globals, 1,2,3);
 	}
 
 	@Test
@@ -48,9 +48,9 @@ public class RestrictionProcessorTest {
 		PatientMedRecord record = getPatientRecord();
 		record.certificates = List.of(new MedCertificateDTO());
 
-		List<Restriction> globals = processor.process(record);
+		List<Restriction> processed = processor.process(record);
 
-		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3", "10", "11", "12");
+		assertContains(processed, 1,2,3,10,11,12);
 	}
 
 	@Test
@@ -59,9 +59,13 @@ public class RestrictionProcessorTest {
 
 		PatientMedRecord record = getPatientRecord();
 
-		List<Restriction> globals = processor.process(record);
+		List<Restriction> processed = processor.process(record);
 
-		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3", "4", "5", "6");
+		assertContains(processed, 1,2,3,4,5,6);
+	}
+
+	private void assertContains(List<Restriction> globals, Integer... titles) {
+		assertThat(globals.stream().map(f -> Integer.parseInt(f.getTitle()))).contains(titles);
 	}
 
 	List<Restriction> getRestrictions() {
