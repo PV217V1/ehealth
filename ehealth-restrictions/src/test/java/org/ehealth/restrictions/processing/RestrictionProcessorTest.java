@@ -53,6 +53,17 @@ public class RestrictionProcessorTest {
 		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3", "10", "11", "12");
 	}
 
+	@Test
+	void retrieveNonVaccinatedRestrictions() {
+		Restriction.persist(getRestrictions());
+
+		PatientMedRecord record = getPatientRecord();
+
+		List<Restriction> globals = processor.process(record);
+
+		assertThat(globals.stream().map(Restriction::getTitle)).contains("1", "2", "3", "4", "5", "6");
+	}
+
 	List<Restriction> getRestrictions() {
 		return List.of(
 				new Restriction("1", "Description 1",
