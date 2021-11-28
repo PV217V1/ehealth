@@ -7,7 +7,6 @@ import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
-import java.util.Map;
 
 @ApplicationScoped
 public class RestrictionProcessorImpl implements RestrictionProcessor {
@@ -16,20 +15,30 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 	@NotNull
 	public List<Restriction> process(PatientMedRecord record) {
 		if (!record.certificates.isEmpty()) {
-			return Restriction.find("scope = :scope1 or scope = :scope2",
-					Map.of("scope1", RestrictionScope.GLOBAL, "scope2", RestrictionScope.VACCINATED))
+			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.VACCINATED))
 					.list();
 		}
 
-		return Restriction.find("scope = :scope1 or scope = :scope2",
-				Map.of("scope1", RestrictionScope.GLOBAL, "scope2", RestrictionScope.NOT_VACCINATED))
+		return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.NOT_VACCINATED))
 				.list();
 	}
 
 	@Override
 	public List<Restriction> getGlobalRestrictions() {
-		return Restriction.find("scope = :scope",
-				Map.of("scope", RestrictionScope.GLOBAL))
+		return Restriction.find(scopeQuery(RestrictionScope.GLOBAL))
 				.list();
+	}
+
+	private String scopeQuery(RestrictionScope... scopes) {
+		StringBuilder builder = new StringBuilder();
+
+		for (int i = 0; i < scopes.length; i++) {
+			builder.append("scope = ").append(RestrictionScope.class.getName()).append('.').append(scopes[i]);
+			if (i < scopes.length - 1) {
+				builder.append(" or ");
+			}
+		}
+
+		return builder.toString();
 	}
 }
