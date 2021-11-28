@@ -28,7 +28,7 @@ public class RestrictionProcessorTest {
 	RestrictionProcessor processor;
 
 	@BeforeEach
-	void setup(){
+	void setup() {
 		Restriction.deleteAll();
 	}
 
@@ -38,7 +38,7 @@ public class RestrictionProcessorTest {
 
 		List<Restriction> globals = processor.getGlobalRestrictions();
 
-		assertContains(globals, 1,2,3);
+		assertContains(globals, 1, 2, 3);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class RestrictionProcessorTest {
 
 		List<Restriction> processed = processor.process(record);
 
-		assertContains(processed, 1,2,3,10,11,12);
+		assertContains(processed, 1, 2, 3, 10, 11, 12);
 	}
 
 	@Test
@@ -61,11 +61,11 @@ public class RestrictionProcessorTest {
 
 		List<Restriction> processed = processor.process(record);
 
-		assertContains(processed, 1,2,3,4,5,6);
+		assertContains(processed, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 	}
 
 	private void assertContains(List<Restriction> globals, Integer... titles) {
-		assertThat(globals.stream().map(f -> Integer.parseInt(f.getTitle()))).contains(titles);
+		assertThat(globals.stream().map(f -> Integer.parseInt(f.getTitle()))).containsExactlyInAnyOrder(titles);
 	}
 
 	List<Restriction> getRestrictions() {
@@ -124,6 +124,6 @@ public class RestrictionProcessorTest {
 		patient.age = 28;
 		patient.address = "Some Address";
 		patient.phoneNum = "012345678";
-		return new PatientMedRecord(patient,List.of(), List.of());
+		return new PatientMedRecord(patient, List.of(), List.of());
 	}
 }

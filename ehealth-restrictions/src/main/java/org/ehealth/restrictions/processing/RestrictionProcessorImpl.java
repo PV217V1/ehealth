@@ -19,7 +19,8 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 					.list();
 		}
 
-		return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.NOT_VACCINATED))
+		// When none of the cases apply you have to obey all the restrictions
+		return Restriction.find(scopeQuery(RestrictionScope.values()))
 				.list();
 	}
 
