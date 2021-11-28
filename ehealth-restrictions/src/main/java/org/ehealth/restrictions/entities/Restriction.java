@@ -23,6 +23,16 @@ public class Restriction extends PanacheEntity {
 	@Column(nullable = false)
 	private RestrictionScope scope;
 
+	public Restriction() { }
+
+	public Restriction(String title, String description, LocalDate issued, LocalDate expired, RestrictionScope scope) {
+		this.title = title;
+		this.description = description;
+		this.issued = issued;
+		this.expired = expired;
+		this.scope = scope;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -61,5 +71,30 @@ public class Restriction extends PanacheEntity {
 
 	public void setExpired(LocalDate expired) {
 		this.expired = expired;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Restriction)) return false;
+
+		Restriction that = (Restriction) o;
+
+		if (getTitle() != null ? !getTitle().equals(that.getTitle()) : that.getTitle() != null) return false;
+		if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+			return false;
+		if (getIssued() != null ? !getIssued().equals(that.getIssued()) : that.getIssued() != null) return false;
+		if (getExpired() != null ? !getExpired().equals(that.getExpired()) : that.getExpired() != null) return false;
+		return getScope() == that.getScope();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getTitle() != null ? getTitle().hashCode() : 0;
+		result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+		result = 31 * result + (getIssued() != null ? getIssued().hashCode() : 0);
+		result = 31 * result + (getExpired() != null ? getExpired().hashCode() : 0);
+		result = 31 * result + (getScope() != null ? getScope().hashCode() : 0);
+		return result;
 	}
 }
