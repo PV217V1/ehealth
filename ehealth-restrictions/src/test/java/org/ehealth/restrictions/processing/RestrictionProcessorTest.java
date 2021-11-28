@@ -77,6 +77,19 @@ public class RestrictionProcessorTest {
 		assertContains(processed, 1, 2, 3, 13, 14, 15);
 	}
 
+	@Test
+	void retrieveRestrictionsForIdealCase() {
+		Restriction.persist(getRestrictions());
+
+		PatientMedRecord record = getPatientRecord();
+		record.tests = List.of(new MedTestDTO());
+		record.certificates = List.of(new MedCertificateDTO());
+
+		List<Restriction> processed = processor.process(record);
+
+		assertContains(processed, 1, 2, 3);
+	}
+
 	private void assertContains(List<Restriction> globals, Integer... titles) {
 		assertThat(globals.stream().map(f -> Integer.parseInt(f.getTitle()))).containsExactlyInAnyOrder(titles);
 	}

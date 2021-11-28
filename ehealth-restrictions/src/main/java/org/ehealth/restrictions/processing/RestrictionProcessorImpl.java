@@ -14,6 +14,10 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 	@Override
 	@NotNull
 	public List<Restriction> process(PatientMedRecord record) {
+		if (!record.certificates.isEmpty() && !record.tests.isEmpty()) {
+			return getGlobalRestrictions();
+		}
+
 		if (!record.certificates.isEmpty()) {
 			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.VACCINATED))
 					.list();
