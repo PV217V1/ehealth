@@ -8,7 +8,7 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-  - job_name: 'example-project'
+  - job_name: 'ehealth'
     metrics_path: /q/metrics
     static_configs:
-      - targets: ['localhost:8080', 'localhost:8081', 'localhost:8082']
+      - targets: ['host.docker.internal:8080', 'host.docker.internal:8090', 'host.docker.internal:8100', 'host.docker.internal:8110']
