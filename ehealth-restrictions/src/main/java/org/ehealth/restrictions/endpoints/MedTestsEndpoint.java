@@ -4,6 +4,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Path("/certificates")
 @RegisterRestClient(configKey = "tests-service-endpoint")
+@ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 public interface MedTestsEndpoint {
 

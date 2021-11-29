@@ -94,7 +94,7 @@ public class RestrictionProcessorTest {
 		assertThat(globals.stream().map(f -> Integer.parseInt(f.getTitle()))).containsExactlyInAnyOrder(titles);
 	}
 
-	List<Restriction> getRestrictions() {
+	public static List<Restriction> getRestrictions() {
 		return List.of(
 				new Restriction("1", "Description 1",
 						LocalDate.of(2021, Month.APRIL, 20),
@@ -144,7 +144,7 @@ public class RestrictionProcessorTest {
 		);
 	}
 
-	private PatientMedRecord getPatientRecord() {
+	public static PatientMedRecord getPatientRecord() {
 		PatientDTO patient = new PatientDTO();
 		patient.name = "John";
 		patient.age = 28;

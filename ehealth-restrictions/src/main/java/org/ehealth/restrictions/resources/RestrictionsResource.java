@@ -1,6 +1,8 @@
 package org.ehealth.restrictions.resources;
 
 import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
 import org.ehealth.restrictions.entities.Restriction;
@@ -81,16 +83,32 @@ public class RestrictionsResource {
 
 	@GET
 	@Path("/forUser/{id}")
+	@APIResponses({
+			@APIResponse(responseCode = "503",
+					description = "Could not contact dependent services, " +
+							"cannot evaluate the patient, " +
+							"returning Global restrictions only!"),
+			@APIResponse(responseCode = "200",
+					description = "Returns the descriptions that patient " +
+							"with provided certificates and tests must follow!")
+	})
 	@Fallback(fallbackMethod = "forUserFallback")
 	public Response forUser(@PathParam Long id) {
-		PatientDTO p = patients.findById(id);
+		PatientDTO p;
 		List<MedCertificateDTO> medCerts;
 		List<MedTestDTO> medTests;
 
 		try {
-			medCerts = certs.findByPatientId(id);
+			p = patients.findById(id);
+		} catch (Exception e) {
+			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
+					status(Response.Status.SERVICE_UNAVAILABLE)
+					.build();
 		}
-		catch (Exception e) {
+
+		try {
+			medCerts = certs.findByPatientId(id);
+		} catch (Exception e) {
 			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
 					status(Response.Status.SERVICE_UNAVAILABLE)
 					.build();
@@ -98,8 +116,7 @@ public class RestrictionsResource {
 
 		try {
 			medTests = tests.findByPatientId(id);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
 					status(Response.Status.SERVICE_UNAVAILABLE)
 					.build();
