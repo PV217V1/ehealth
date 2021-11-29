@@ -1,7 +1,10 @@
 package soa.ehealth.dto;
+
 import javax.persistence.*;
+
+
 @Entity
-public class People {
+public class Person {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,7 +26,7 @@ public class People {
     }
 
     public String email;
-    public People() {
+    public Person() {
 
     }
 
@@ -69,7 +72,7 @@ public class People {
 
     @Override
     public String toString() {
-        return "People{" +
+        return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age='" + age + '\'' +
@@ -79,6 +82,4 @@ public class People {
                 ", email='" + email + '\'' +
                 '}';
     }
-
 }
-

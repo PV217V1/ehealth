@@ -1,7 +1,7 @@
 package soa.ehealth.resource;
 
 
-import soa.ehealth.dto.People;
+import soa.ehealth.dto.Person;
 
 import java.net.URI;
 import java.util.List;
@@ -14,60 +14,60 @@ import javax.ws.rs.core.Response;
 
 
 
-@Path("/people_resource")
+@Path("/person")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PeopleResouce {
+public class PersonResouce {
     @Inject
     PeopleRepository peopleRepository;
 
     @POST
-    @Path("/registerpeople")
+    @Path("/create")
     @Transactional
-    public Response newRegistration(People patient){
-        peopleRepository.persist(patient);
-        return  Response.created(URI.create("/patient" + patient.getName())).build();
+    public Response newRegistration(Person person){
+        peopleRepository.persist(person);
+        return  Response.created(URI.create("/person" + person.getName())).build();
     }
     @GET
-    @Path("/getpeopleinfo")
-    public List<People> list() {
+    @Path("/selectAll")
+    public List<Person> list() {
         return peopleRepository.listAll();
     }
 
     @PUT
-    @Path("/updatepeopleinfo/{id}")
+    @Path("/{id}/update")
     @Transactional
-    public People updatePatientIn(@PathParam("id") Long id, People patient) {
-        People entity = peopleRepository.findById(id);
+    public Person updatePatientIn(@PathParam("id") Long id, Person person) {
+        Person entity = peopleRepository.findById(id);
         if(entity == null) {
             throw new NotFoundException();
         }
 
         // map all fields from the person parameter to the existing entity
-        entity.setName(patient.getName());
-        entity.setAge(patient.getAge() );
-        entity.setAddress(patient.getAddress());
-        entity.setTelephone(patient.getTelephone());
+        entity.setName(person.getName());
+        entity.setAge(person.getAge() );
+        entity.setAddress(person.getAddress());
+        entity.setTelephone(person.getTelephone());
         return entity;
     }
     @DELETE
-    @Path("/deletepeoplebyid/{id}")
+    @Path("/{id}/delete")
     @Transactional
     public void deletePatient(@PathParam("id") Long id) {
-        People entity = peopleRepository.findById(id);
+        Person entity = peopleRepository.findById(id);
         if(entity == null) {
             throw new NotFoundException();
         }
         peopleRepository.delete(entity);
     }
     @GET
-    @Path("/findpeoplebyid/{id}")
-    public People search(@PathParam("id") Long id) {
+    @Path("/selectById/{id}")
+    public Person search(@PathParam("id") Long id) {
         return peopleRepository.findById(id);
     }
 
     @GET
-    @Path("totalPatient/count")
+    @Path("totalCount/count")
     public Long count() {
         return peopleRepository.count();
     }
