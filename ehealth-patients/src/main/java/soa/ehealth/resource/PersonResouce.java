@@ -67,7 +67,7 @@ public class PersonResouce {
     }
 
     @GET
-    @Path("totalCount/count")
+    @Path("/count")
     public Long count() {
         return peopleRepository.count();
     }
