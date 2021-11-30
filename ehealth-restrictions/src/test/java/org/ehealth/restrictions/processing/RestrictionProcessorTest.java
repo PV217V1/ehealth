@@ -147,9 +147,9 @@ public class RestrictionProcessorTest {
 	public static PatientMedRecord getPatientRecord() {
 		PatientDTO patient = new PatientDTO();
 		patient.name = "John";
-		patient.age = 28;
+		patient.age = "28";
 		patient.address = "Some Address";
-		patient.phoneNum = "012345678";
+		patient.telephone = "012345678";
 		return new PatientMedRecord(patient, List.of(), List.of());
 	}
 }

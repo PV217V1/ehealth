@@ -11,17 +11,31 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/ehealth")
+/**
+ * Contract definition for the ehealth-patients microservice
+ */
+@Path("/person")
 @RegisterRestClient(configKey = "patient-service-endpoint")
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 public interface PatientEndpoint {
 
-	@GET
-	@Path("")
-	List<PatientDTO> listAll();
+    /**
+     * Endpoint to retrieve all patients registered into the system
+     *
+     * @return list of all patients
+     */
+    @GET
+    @Path("/selectAll")
+    List<PatientDTO> listAll();
 
-	@GET
-	@Path("{id}")
-	PatientDTO findById(@PathParam Long id);
+    /**
+     * Endpoint to retrieve patient by their database identifier
+     *
+     * @param id the DB assigned identifier
+     * @return the {@link PatientDTO} for the patient, {@link null} if not found
+     */
+    @GET
+    @Path("/selectById/{id}")
+    PatientDTO findById(@PathParam Long id);
 }

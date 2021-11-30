@@ -1,6 +1,8 @@
 package org.ehealth.restrictions.endpoints.dto.medtests;
 
-// TODO
+/**
+ * Medical test DTO as defined by the <strong>ehealth-medtests</strong> endpoint
+ */
 public class MedTestDTO {
 
 }

@@ -7,6 +7,9 @@ import org.ehealth.restrictions.entities.Restriction;
 
 import java.util.Random;
 
+/**
+ * Class responsible for monitoring the readiness of the database of the microservice
+ */
 @Readiness
 public class ReadinessCheck implements HealthCheck {
 

@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.time.LocalDate;
 
+/**
+ * Entity for representing a government issued restriction
+ */
 @Entity(name = "e_restriction")
 public class Restriction extends PanacheEntity {
 
@@ -17,6 +20,9 @@ public class Restriction extends PanacheEntity {
 
 	@Column(nullable = false)
 	private LocalDate issued;
+
+	@Column(nullable = false)
+	private LocalDate validSince;
 
 	private LocalDate expired;
 
@@ -65,6 +71,14 @@ public class Restriction extends PanacheEntity {
 		this.issued = issued;
 	}
 
+	public LocalDate getValidSince() {
+		return validSince;
+	}
+
+	public void setValidSince(LocalDate validSince) {
+		this.validSince = validSince;
+	}
+
 	public LocalDate getExpired() {
 		return expired;
 	}
@@ -80,21 +94,22 @@ public class Restriction extends PanacheEntity {
 
 		Restriction that = (Restriction) o;
 
-		if (getTitle() != null ? !getTitle().equals(that.getTitle()) : that.getTitle() != null) return false;
-		if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-			return false;
-		if (getIssued() != null ? !getIssued().equals(that.getIssued()) : that.getIssued() != null) return false;
+		if (!getTitle().equals(that.getTitle())) return false;
+		if (!getDescription().equals(that.getDescription())) return false;
+		if (!getIssued().equals(that.getIssued())) return false;
+		if (!getValidSince().equals(that.getValidSince())) return false;
 		if (getExpired() != null ? !getExpired().equals(that.getExpired()) : that.getExpired() != null) return false;
 		return getScope() == that.getScope();
 	}
 
 	@Override
 	public int hashCode() {
-		int result = getTitle() != null ? getTitle().hashCode() : 0;
-		result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-		result = 31 * result + (getIssued() != null ? getIssued().hashCode() : 0);
+		int result = getTitle().hashCode();
+		result = 31 * result + getDescription().hashCode();
+		result = 31 * result + getIssued().hashCode();
+		result = 31 * result + getValidSince().hashCode();
 		result = 31 * result + (getExpired() != null ? getExpired().hashCode() : 0);
-		result = 31 * result + (getScope() != null ? getScope().hashCode() : 0);
+		result = 31 * result + getScope().hashCode();
 		return result;
 	}
 }

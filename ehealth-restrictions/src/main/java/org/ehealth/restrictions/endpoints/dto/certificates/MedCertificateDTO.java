@@ -1,6 +1,8 @@
 package org.ehealth.restrictions.endpoints.dto.certificates;
 
-// TODO
+/**
+ * Certificate DTO as defined by the <strong>ehealth-certificates</strong> endpoint
+ */
 public class MedCertificateDTO {
 
 }
