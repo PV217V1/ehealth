@@ -3,6 +3,7 @@ package org.ehealth.restrictions.processing;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,4 +22,11 @@ public interface RestrictionProcessor {
 	 * @return a list of all restriction which apply globally
 	 */
 	List<Restriction> getGlobalRestrictions();
+
+	/**
+	 * Function to filter out restrictions that are valid for the set date
+	 * @param date the date to filter by
+	 * @return a list of all restriction which apply for the date
+	 */
+    List<Restriction> getRestrictionsForDate(LocalDate date);
 }

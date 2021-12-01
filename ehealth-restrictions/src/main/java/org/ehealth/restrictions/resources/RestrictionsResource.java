@@ -29,6 +29,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -113,7 +114,7 @@ public class RestrictionsResource {
     /**
      * CR<strong>U</strong>D operation
      *
-     * @param id the identifier of the {@link Restriction} to update
+     * @param id       the identifier of the {@link Restriction} to update
      * @param newValue the new values to store
      * @return 200 on success
      */
@@ -135,6 +136,7 @@ public class RestrictionsResource {
 
     /**
      * Function to return all {@link Restriction}s for given patient's medical record
+     *
      * @param id the patient's identifier
      * @return 200 on success
      */
@@ -183,6 +185,20 @@ public class RestrictionsResource {
 
         return Response.ok(restrictionProcessor.process(new PatientMedRecord(p, medCerts, medTests)))
                 .build();
+    }
+
+    /**
+     * Function to return all {@link Restriction}s for given date
+     *
+     * @param date the date to find applicable restrictions for
+     * @return 200 on success
+     */
+    @GET
+    @Path("/forDate")
+    @Counted(name = "restrictions.forDateCalls", description = "How many times this endpoint was called.")
+    @Timed(name = "restrictions.forDateDuration", description = "How long does it take to lookup restrictions for dates.")
+    public Response forDate(@PathParam LocalDate date) {
+        return Response.ok(restrictionProcessor.getRestrictionsForDate(date)).build();
     }
 
     /**
