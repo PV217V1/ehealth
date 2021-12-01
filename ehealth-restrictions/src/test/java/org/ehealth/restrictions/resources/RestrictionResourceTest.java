@@ -5,6 +5,7 @@ import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.ehealth.restrictions.common.DataHelper;
 import org.ehealth.restrictions.endpoints.CertificateEndpoint;
 import org.ehealth.restrictions.endpoints.MedTestsEndpoint;
 import org.ehealth.restrictions.endpoints.PatientEndpoint;
@@ -35,7 +36,7 @@ public class RestrictionResourceTest {
 	@BeforeEach
 	void setup() {
 		Restriction.deleteAll();
-		Restriction.persist(RestrictionProcessorTest.getRestrictions());
+		Restriction.persist(DataHelper.getRestrictions());
 	}
 
 	@Test
@@ -87,11 +88,11 @@ public class RestrictionResourceTest {
 
 	@Test
 	public void retrieveAllForUser() {
-		when(patients.findById(1L)).thenReturn(RestrictionProcessorTest.getPatientRecord().patient);
+		when(patients.findById(1L)).thenReturn(DataHelper.getPatientRecord().patient);
 		when(medTests.findByPatientId(1L)).thenReturn(List.of());
 		when(certs.findByPatientId(1L)).thenReturn(List.of());
 
-		PatientMedRecord record = RestrictionProcessorTest.getPatientRecord();
+		PatientMedRecord record = DataHelper.getPatientRecord();
 
 		given()
 				.body(record)
