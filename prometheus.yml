@@ -11,7 +11,13 @@ scrape_configs:
   - job_name: 'ehealth'
     metrics_path: /q/metrics
     static_configs:
-      - targets: ['host.docker.internal:${PATIENTS_ENDPOINT_PORT}',
-                  'host.docker.internal:${CERTIFICATES_ENDPOINT_PORT}',
-                  'host.docker.internal:${MED_TESTS_ENDPOINT_PORT}',
-                  'host.docker.internal:${RESTRICTIONS_ENDPOINT_PORT}']
+      - targets: [ 'host.docker.internal:8080',
+                   'host.docker.internal:8090',
+                   'host.docker.internal:8100',
+                   'host.docker.internal:8110']
+
+#      - targets: ['host.docker.internal:${PATIENTS_ENDPOINT_PORT}',
+#                  'host.docker.internal:${CERTIFICATES_ENDPOINT_PORT}',
+#                  'host.docker.internal:${MED_TESTS_ENDPOINT_PORT}',
+#                  'host.docker.internal:${RESTRICTIONS_ENDPOINT_PORT}']
+# BECAUSE PROMETHEUS DEVS ARE JUST SELFCENTERED DUMMIES THEY ARE AGAINST ENVIRONMENT VARIABLE EXPANSION"
