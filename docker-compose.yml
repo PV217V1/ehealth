@@ -12,6 +12,16 @@ services:
     volumes:
       - ${HOST_DIR}:/var/lib/postgresql/data
 
+  postgres-shared:
+    image: postgres:14.0
+    container_name: postgres-shared
+    ports:
+      - "${SHARED_POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - ${HOST_DIR}/shared-pmc-DB:/var/lib/postgresql/data
+
   prometheus:
     image: prom/prometheus:v2.30.3
     container_name: prometheus
