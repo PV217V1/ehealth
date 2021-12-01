@@ -1,4 +1,4 @@
-package soa.ehealth;
+package soa.ehealth.certificates;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
