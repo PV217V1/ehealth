@@ -15,7 +15,7 @@ import java.util.List;
  * Contract definition for the ehealth-patients microservice
  */
 @Path("/person")
-@RegisterRestClient(configKey = "patient-service-endpoint")
+@RegisterRestClient(configKey = "patients-service-endpoint")
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 public interface PatientEndpoint {

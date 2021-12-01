@@ -16,7 +16,7 @@ import java.util.List;
  * Contract definition for the ehealth-certificates microservice
  */
 @Path("/certificates")
-@RegisterRestClient(configKey = "certificate-service-endpoint")
+@RegisterRestClient(configKey = "certificates-service-endpoint")
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 public interface CertificateEndpoint {
