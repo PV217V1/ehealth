@@ -43,6 +43,7 @@ public class RestrictionResourceTest {
 	public void create() {
 		Restriction r = new Restriction("A", "Desc A",
 				LocalDate.of(2021, Month.AUGUST, 20),
+				LocalDate.of(2021, Month.AUGUST, 22),
 				LocalDate.of(2021, Month.SEPTEMBER, 20),
 				RestrictionScope.GLOBAL);
 
@@ -72,6 +73,16 @@ public class RestrictionResourceTest {
 				.then()
 				.statusCode(200)
 				.body("size()", is(3));
+	}
+
+
+	@Test
+	public void retrieveForDate() {
+		given()
+				.when().get("/restrictions/forDate/" + "2021-08-22")
+				.then()
+				.statusCode(200)
+				.body("title", containsInAnyOrder("5", "6", "7", "8"));
 	}
 
 	@InjectMock

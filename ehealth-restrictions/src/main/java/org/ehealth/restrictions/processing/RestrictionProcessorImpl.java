@@ -8,6 +8,7 @@ import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
 import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class RestrictionProcessorImpl implements RestrictionProcessor {
@@ -41,7 +42,8 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 
 	@Override
 	public List<Restriction> getRestrictionsForDate(LocalDate date) {
-		return Restriction.find("validSince <= :date and expired > :date", date).list();
+		String query = "validSince <= :date AND ((expired IS NOT NULL AND expired > :date) OR expired IS NULL)";
+		return Restriction.find(query, Map.of("date", date)).list();
 	}
 
 	private String scopeQuery(RestrictionScope... scopes) {

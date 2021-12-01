@@ -31,10 +31,11 @@ public class Restriction extends PanacheEntity {
 
 	public Restriction() { }
 
-	public Restriction(String title, String description, LocalDate issued, LocalDate expired, RestrictionScope scope) {
+	public Restriction(String title, String description, LocalDate issued, LocalDate validSince, LocalDate expired, RestrictionScope scope) {
 		this.title = title;
 		this.description = description;
 		this.issued = issued;
+		this.validSince = validSince;
 		this.expired = expired;
 		this.scope = scope;
 	}

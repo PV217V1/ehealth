@@ -3,6 +3,7 @@ package org.ehealth.restrictions.resources;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -17,6 +18,7 @@ import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
 import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
 import org.ehealth.restrictions.processing.RestrictionProcessor;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -194,7 +196,8 @@ public class RestrictionsResource {
      * @return 200 on success
      */
     @GET
-    @Path("/forDate")
+    @Path("/forDate/{date}")
+    @Parameter(name = "date", description = "The date in yyyy-mm-dd format", example = "2021-08-22")
     @Counted(name = "restrictions.forDateCalls", description = "How many times this endpoint was called.")
     @Timed(name = "restrictions.forDateDuration", description = "How long does it take to lookup restrictions for dates.")
     public Response forDate(@PathParam LocalDate date) {
