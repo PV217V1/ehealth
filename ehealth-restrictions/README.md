@@ -35,4 +35,6 @@ on whether the current user is vaccinated/contracted Covid-19/un-vaccinated.
 
 
 2. Start the docker containers using the provided `docker-compose.yml`
-3. 
+3. ???
+4. Go to `localhost:${RESTRICTIONS_ENDPOINT_PORT}/openapi-ui`
+5. Enjoy the UI that we *did not* create.
