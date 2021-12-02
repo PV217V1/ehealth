@@ -45,11 +45,11 @@ public class MedTest extends PanacheEntity {
 		this.testedAt = testedAt;
 	}
 
-	public long getValidThrough() {
+	public long getValidThroughSeconds() {
 		return validThroughSeconds;
 	}
 
-	public void setValidThrough(long validThroughSeconds) {
+	public void setValidThroughSeconds(long validThroughSeconds) {
 		this.validThroughSeconds = validThroughSeconds;
 	}
 

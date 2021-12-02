@@ -7,15 +7,15 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 import soa.ehealth.medtests.endpoints.PersonDTO;
 import soa.ehealth.medtests.endpoints.PersonEndpoint;
 import soa.ehealth.medtests.entities.MedTest;
@@ -46,38 +46,39 @@ public class MedTestResource {
 	}
 
 	@GET
-	@Path("/scoped/{scope}")
-	public Uni<Response> retrieveAll(@PathParam TestType type) {
+	@Path("/testType/{type}")
+	public Uni<Response> retrieveAll(@PathParam("type") TestType type) {
 		return MedTest.find("testType", type).list().onItem()
 				.transform(item -> Response.ok(item).build());
 	}
 
 	@GET
 	@Path("/{id}")
-	public Uni<Response> retrieve(@PathParam Long id) {
+	public Uni<Response> retrieve(@PathParam("id") Long id) {
 		return MedTest.findById(id).onItem()
 				.transform(item -> Response.ok(item).build());
 	}
 
 
 	@GET
-	@Path("/forUser/{id}")
+	@Path("/forPerson/{id}")
 	@Fallback(fallbackMethod = "forUserFallback")
-	public Uni<Response> forUser(@PathParam Long id) {
-		PersonDTO p = people.findById(id);
+	public Uni<Response> forPerson(@PathParam("id") Long id) {
+		Uni<PersonDTO> p = people.findById(id);
 
-		if (p.id.equals(id)) {
-			return MedTest.find("patientID", id).list().onItem()
-					.transform(item -> Response.ok(item).build());
-		}
-
-		return Uni.createFrom().item(Response.status(Response.Status.NOT_FOUND).build());
+		return p.onItem().transformToUni(item -> {
+			if (item != null && item.id.equals(id)) {
+				return MedTest.find("personId", id).list().onItem()
+						.transform(itemInner -> Response.ok(itemInner).build());
+			}
+			return Uni.createFrom().item(Response.status(Response.Status.NOT_FOUND).build());
+		});
 	}
 
 	@DELETE
 	@Path("delete")
 	@Transactional
-	public Uni<Response> delete(@QueryParam Long id) {
+	public Uni<Response> delete(@QueryParam("id") Long id) {
 		return MedTest.deleteById(id).onItem()
 				.transform(item -> item ? Response.ok().build() : Response.notModified().build());
 	}
