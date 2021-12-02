@@ -7,18 +7,17 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
+import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.entities.RestrictionScope;
 import org.ehealth.restrictions.endpoints.CertificateEndpoint;
 import org.ehealth.restrictions.endpoints.MedTestsEndpoint;
-import org.ehealth.restrictions.endpoints.PatientEndpoint;
+import org.ehealth.restrictions.endpoints.PeopleEndpoint;
 import org.ehealth.restrictions.endpoints.dto.certificates.MedCertificateDTO;
 import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
-import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
+import org.ehealth.restrictions.endpoints.dto.people.PersonDTO;
 import org.ehealth.restrictions.processing.RestrictionProcessor;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -44,7 +43,7 @@ public class RestrictionsResource {
 
     @Inject
     @RestClient
-    PatientEndpoint patients;
+    PeopleEndpoint people;
 
     @Inject
     @RestClient
@@ -137,9 +136,9 @@ public class RestrictionsResource {
     }
 
     /**
-     * Function to return all {@link Restriction}s for given patient's medical record
+     * Function to return all {@link Restriction}s for given person's medical record
      *
-     * @param id the patient's identifier
+     * @param id the parson's identifier
      * @return 200 on success
      */
     @GET
@@ -147,22 +146,22 @@ public class RestrictionsResource {
     @APIResponses({
             @APIResponse(responseCode = "503",
                     description = "Could not contact dependent services, " +
-                            "cannot evaluate the patient, " +
+                            "cannot evaluate the person, " +
                             "returning Global restrictions only!"),
             @APIResponse(responseCode = "200",
-                    description = "Returns the descriptions that patient " +
+                    description = "Returns the restrictions that person " +
                             "with provided certificates and tests must follow!")
     })
-    @Fallback(fallbackMethod = "forUserFallback")
-    @Counted(name = "restrictions.forUserCalls", description = "How many times this endpoint was called.")
-    @Timed(name = "restrictions.forUserDuration", description = "How long does it take to lookup restrictions for users.")
-    public Response forUser(@PathParam Long id) {
-        PatientDTO p;
+    @Fallback(fallbackMethod = "forPersonFallback")
+    @Counted(name = "restrictions.forPersonCalls", description = "How many times this endpoint was called.")
+    @Timed(name = "restrictions.forPersonDuration", description = "How long does it take to lookup restrictions for people.")
+    public Response forPerson(@PathParam Long id) {
+        PersonDTO p;
         List<MedCertificateDTO> medCerts;
         List<MedTestDTO> medTests;
 
         try {
-            p = patients.findById(id);
+            p = people.findById(id);
         } catch (Exception e) {
             return Response.ok(restrictionProcessor.getGlobalRestrictions()).
                     status(Response.Status.SERVICE_UNAVAILABLE)
@@ -185,7 +184,7 @@ public class RestrictionsResource {
                     .build();
         }
 
-        return Response.ok(restrictionProcessor.process(new PatientMedRecord(p, medCerts, medTests)))
+        return Response.ok(restrictionProcessor.process(new PersonMedRecord(p, medCerts, medTests)))
                 .build();
     }
 
@@ -222,7 +221,7 @@ public class RestrictionsResource {
 
     // Used as a fallback method
     @SuppressWarnings("unused")
-    public Response forUserFallback(Long id) {
+    public Response forPersonFallback(Long id) {
         return Response.status(Response.Status.SERVICE_UNAVAILABLE)
                 .build();
     }

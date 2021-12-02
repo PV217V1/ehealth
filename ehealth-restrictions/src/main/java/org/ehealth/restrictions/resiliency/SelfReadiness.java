@@ -33,8 +33,8 @@ public class SelfReadiness implements HealthCheck {
             return HealthCheckResponse.down("dead");
         }
 
-        if (new PatientsLivenessCheck().call().getStatus() == HealthCheckResponse.Status.DOWN) {
-            return HealthCheckResponse.builder().up().withData("ISSUE", "Patients DOWN").build();
+        if (new PeopleLivenessCheck().call().getStatus() == HealthCheckResponse.Status.DOWN) {
+            return HealthCheckResponse.builder().up().withData("ISSUE", "People DOWN").build();
         }
 
         if (new CertificatesLivenessCheck().call().getStatus() == HealthCheckResponse.Status.DOWN) {

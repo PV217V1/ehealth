@@ -1,7 +1,7 @@
 package org.ehealth.restrictions.common;
 
-import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
-import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
+import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
+import org.ehealth.restrictions.endpoints.dto.people.PersonDTO;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.entities.RestrictionScope;
 
@@ -75,12 +75,12 @@ public class DataHelper {
         );
     }
 
-    public static PatientMedRecord getPatientRecord() {
-        PatientDTO patient = new PatientDTO();
+    public static PersonMedRecord getPatientRecord() {
+        PersonDTO patient = new PersonDTO();
         patient.name = "John";
         patient.age = "28";
         patient.address = "Some Address";
         patient.telephone = "012345678";
-        return new PatientMedRecord(patient, List.of(), List.of());
+        return new PersonMedRecord(patient, List.of(), List.of());
     }
 }

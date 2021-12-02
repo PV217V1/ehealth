@@ -8,11 +8,10 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.ehealth.restrictions.common.DataHelper;
 import org.ehealth.restrictions.endpoints.CertificateEndpoint;
 import org.ehealth.restrictions.endpoints.MedTestsEndpoint;
-import org.ehealth.restrictions.endpoints.PatientEndpoint;
-import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
+import org.ehealth.restrictions.endpoints.PeopleEndpoint;
+import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.entities.RestrictionScope;
-import org.ehealth.restrictions.processing.RestrictionProcessorTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -87,7 +86,7 @@ public class RestrictionResourceTest {
 
 	@InjectMock
 	@RestClient
-	PatientEndpoint patients;
+	PeopleEndpoint people;
 
 	@InjectMock
 	@RestClient
@@ -99,11 +98,11 @@ public class RestrictionResourceTest {
 
 	@Test
 	public void retrieveAllForUser() {
-		when(patients.findById(1L)).thenReturn(DataHelper.getPatientRecord().patient);
+		when(people.findById(1L)).thenReturn(DataHelper.getPatientRecord().person);
 		when(medTests.findByPatientId(1L)).thenReturn(List.of());
 		when(certs.findByPatientId(1L)).thenReturn(List.of());
 
-		PatientMedRecord record = DataHelper.getPatientRecord();
+		PersonMedRecord record = DataHelper.getPatientRecord();
 
 		given()
 				.body(record)

@@ -6,16 +6,16 @@ import org.eclipse.microprofile.health.Liveness;
 import org.ehealth.restrictions.resiliency.base.BaseHealthCheck;
 
 /**
- * Class responsible for monitoring the liveness of the patients-microservice
+ * Class responsible for monitoring the liveness of the people-microservice
  */
 @Liveness
-public class PatientsLivenessCheck extends BaseHealthCheck {
+public class PeopleLivenessCheck extends BaseHealthCheck {
 
-    @ConfigProperty(name = "patients-service-endpoint")
+    @ConfigProperty(name = "people-service-endpoint")
     String url;
 
     @Override
     public HealthCheckResponse call() {
-        return getHealthCheckResponse(url, "Patients Status");
+        return getHealthCheckResponse(url, "People Status");
     }
 }

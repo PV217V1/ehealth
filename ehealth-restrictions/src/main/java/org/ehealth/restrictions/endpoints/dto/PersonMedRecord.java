@@ -2,19 +2,19 @@ package org.ehealth.restrictions.endpoints.dto;
 
 import org.ehealth.restrictions.endpoints.dto.certificates.MedCertificateDTO;
 import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
-import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
+import org.ehealth.restrictions.endpoints.dto.people.PersonDTO;
 
 import java.util.List;
 
-public class PatientMedRecord {
-	public PatientDTO patient;
+public class PersonMedRecord {
+	public PersonDTO person;
 
 	public List<MedCertificateDTO> certificates;
 
 	public List<MedTestDTO> tests;
 
-	public PatientMedRecord(PatientDTO patient, List<MedCertificateDTO> medCerts, List<MedTestDTO> medTests) {
-		this.patient = patient;
+	public PersonMedRecord(PersonDTO person, List<MedCertificateDTO> medCerts, List<MedTestDTO> medTests) {
+		this.person = person;
 		certificates = medCerts;
 		tests = medTests;
 	}

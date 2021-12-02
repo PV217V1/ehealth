@@ -1,7 +1,7 @@
 package org.ehealth.restrictions.processing;
 
 import org.ehealth.restrictions.entities.Restriction;
-import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
+import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface RestrictionProcessor {
 	/**
-	 * Function to process {@link PatientMedRecord} and provide which restrictions apply for the patient
-	 * @param record the patient's testing and certificate record
-	 * @return a list of all restriction which apply for the patient
+	 * Function to process {@link PersonMedRecord} and provide which restrictions apply for the person
+	 * @param record the person's testing and certificate record
+	 * @return a list of all restriction which apply for the person
 	 */
-	List<Restriction> process(PatientMedRecord record);
+	List<Restriction> process(PersonMedRecord record);
 
 	/**
 	 * Shortcut to return global restrictions which apply to everybody

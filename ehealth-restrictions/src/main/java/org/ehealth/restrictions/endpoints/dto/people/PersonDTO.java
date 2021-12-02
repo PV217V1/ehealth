@@ -1,9 +1,9 @@
-package org.ehealth.restrictions.endpoints.dto.patients;
+package org.ehealth.restrictions.endpoints.dto.people;
 
 /**
  * Patient DTO as defined by the <strong>ehealth-patients</strong> endpoint
  */
-public class PatientDTO {
+public class PersonDTO {
 	/**
 	 * Name and Surname of the patient
 	 */
@@ -30,9 +30,9 @@ public class PatientDTO {
 	public String telephone;
 
 
-	public PatientDTO() { }
+	public PersonDTO() { }
 
-	public PatientDTO(String name, String age, String sex, String address, String phoneNum) {
+	public PersonDTO(String name, String age, String sex, String address, String phoneNum) {
 		this.name = name;
 		this.age = age;
 		this.address = address;

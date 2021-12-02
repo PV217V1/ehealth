@@ -4,19 +4,15 @@ import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import org.ehealth.restrictions.common.DataHelper;
-import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
+import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
 import org.ehealth.restrictions.endpoints.dto.certificates.MedCertificateDTO;
 import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
-import org.ehealth.restrictions.endpoints.dto.patients.PatientDTO;
 import org.ehealth.restrictions.entities.Restriction;
-import org.ehealth.restrictions.entities.RestrictionScope;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +43,7 @@ public class RestrictionProcessorTest {
 	void retrieveVaccinatedRestrictions() {
 		Restriction.persist(DataHelper.getRestrictions());
 
-		PatientMedRecord record = DataHelper.getPatientRecord();
+		PersonMedRecord record = DataHelper.getPatientRecord();
 		record.certificates = List.of(new MedCertificateDTO());
 
 		List<Restriction> processed = processor.process(record);
@@ -59,7 +55,7 @@ public class RestrictionProcessorTest {
 	void retrieveNonVaccinatedORPostContractionRestrictions() {
 		Restriction.persist(DataHelper.getRestrictions());
 
-		PatientMedRecord record = DataHelper.getPatientRecord();
+		PersonMedRecord record = DataHelper.getPatientRecord();
 
 		List<Restriction> processed = processor.process(record);
 
@@ -70,7 +66,7 @@ public class RestrictionProcessorTest {
 	void retrieveTestedRestrictions() {
 		Restriction.persist(DataHelper.getRestrictions());
 
-		PatientMedRecord record = DataHelper.getPatientRecord();
+		PersonMedRecord record = DataHelper.getPatientRecord();
 		record.tests = List.of(new MedTestDTO());
 
 		List<Restriction> processed = processor.process(record);
@@ -82,7 +78,7 @@ public class RestrictionProcessorTest {
 	void retrieveRestrictionsForIdealCase() {
 		Restriction.persist(DataHelper.getRestrictions());
 
-		PatientMedRecord record = DataHelper.getPatientRecord();
+		PersonMedRecord record = DataHelper.getPatientRecord();
 		record.tests = List.of(new MedTestDTO());
 		record.certificates = List.of(new MedCertificateDTO());
 

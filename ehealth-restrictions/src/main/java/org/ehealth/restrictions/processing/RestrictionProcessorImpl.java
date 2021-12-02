@@ -3,7 +3,7 @@ package org.ehealth.restrictions.processing;
 import org.ehealth.restrictions.entities.RestrictionScope;
 import org.jetbrains.annotations.NotNull;
 import org.ehealth.restrictions.entities.Restriction;
-import org.ehealth.restrictions.endpoints.dto.PatientMedRecord;
+import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 
 	@Override
 	@NotNull
-	public List<Restriction> process(PatientMedRecord record) {
+	public List<Restriction> process(PersonMedRecord record) {
 		if (!record.certificates.isEmpty() && !record.tests.isEmpty()) {
 			return getGlobalRestrictions();
 		}
