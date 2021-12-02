@@ -1,7 +1,7 @@
 package soa.ehealth.medtests.endpoints;
 
 /**
- * Person DTO as defined by the <strong>ehealth-patients</strong> endpoint
+ * Person DTO as defined by the <strong>ehealth-people</strong> endpoint
  */
 public class PersonDTO {
 	public Long id;

@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
  * Contract definition for the ehealth-people microservice
  */
 @Path("/person")
-@RegisterRestClient(configKey = "patient-service-endpoint")
+@RegisterRestClient(configKey = "people-service-endpoint")
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 public interface PersonEndpoint {
