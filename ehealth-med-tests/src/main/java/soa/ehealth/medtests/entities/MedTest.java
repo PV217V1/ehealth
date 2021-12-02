@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.Entity;
 import java.time.LocalDate;
 
+/**
+ * Entity for representing a medical test performed by a person
+ */
 @Entity(name = "e_medtests")
 public class MedTest extends PanacheEntity {
 

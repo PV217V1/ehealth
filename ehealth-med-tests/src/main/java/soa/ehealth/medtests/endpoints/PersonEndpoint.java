@@ -10,6 +10,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * Contract definition for the ehealth-people microservice
+ */
 @Path("/person")
 @RegisterRestClient(configKey = "patient-service-endpoint")
 @ApplicationScoped
