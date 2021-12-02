@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class MedTest extends PanacheEntity {
 
 	@NotNull
-	private Long patientId;
+	private Long personId;
 
 	@NotNull
 	private LocalDate testedAt;
@@ -22,19 +22,19 @@ public class MedTest extends PanacheEntity {
 
 	public MedTest() { }
 
-	public MedTest(@NotNull Long patientId, @NotNull LocalDate testedAt, long validThroughSeconds, @NotNull TestType testType) {
-		this.patientId = patientId;
+	public MedTest(@NotNull Long personId, @NotNull LocalDate testedAt, long validThroughSeconds, @NotNull TestType testType) {
+		this.personId = personId;
 		this.testedAt = testedAt;
 		this.validThroughSeconds = validThroughSeconds;
 		this.testType = testType;
 	}
 
-	public @NotNull Long getPatientId() {
-		return patientId;
+	public @NotNull Long getPersonId() {
+		return personId;
 	}
 
-	public void setPatientId(@NotNull Long patientID) {
-		this.patientId = patientID;
+	public void setPersonId(@NotNull Long patientID) {
+		this.personId = patientID;
 	}
 
 	public @NotNull LocalDate getTestedAt() {
@@ -69,14 +69,14 @@ public class MedTest extends PanacheEntity {
 		MedTest medTest = (MedTest) o;
 
 		if (validThroughSeconds != medTest.validThroughSeconds) return false;
-		if (!getPatientId().equals(medTest.getPatientId())) return false;
+		if (!getPersonId().equals(medTest.getPersonId())) return false;
 		if (!getTestedAt().equals(medTest.getTestedAt())) return false;
 		return getTestType() == medTest.getTestType();
 	}
 
 	@Override
 	public int hashCode() {
-		int result = getPatientId().hashCode();
+		int result = getPersonId().hashCode();
 		result = 31 * result + getTestedAt().hashCode();
 		result = 31 * result + (int) (validThroughSeconds ^ (validThroughSeconds >>> 32));
 		result = 31 * result + getTestType().hashCode();

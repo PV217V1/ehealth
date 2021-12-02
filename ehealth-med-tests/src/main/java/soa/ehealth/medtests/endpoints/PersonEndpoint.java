@@ -9,16 +9,16 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
-@Path("/ehealth")
+@Path("/person")
 @RegisterRestClient(configKey = "patient-service-endpoint")
 @Produces(MediaType.APPLICATION_JSON)
-public interface PatientEndpoint {
+public interface PersonEndpoint {
 
 	@GET
 	@Path("")
-	List<PatientDTO> listAll();
+	List<PersonDTO> listAll();
 
 	@GET
 	@Path("{id}")
-	PatientDTO findById(@PathParam Long id);
+	PersonDTO findById(@PathParam Long id);
 }

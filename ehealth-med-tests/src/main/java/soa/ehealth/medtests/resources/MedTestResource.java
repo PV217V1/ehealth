@@ -16,8 +16,8 @@ import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.jboss.resteasy.annotations.jaxrs.QueryParam;
-import soa.ehealth.medtests.endpoints.PatientDTO;
-import soa.ehealth.medtests.endpoints.PatientEndpoint;
+import soa.ehealth.medtests.endpoints.PersonDTO;
+import soa.ehealth.medtests.endpoints.PersonEndpoint;
 import soa.ehealth.medtests.entities.MedTest;
 import soa.ehealth.medtests.entities.TestType;
 
@@ -28,7 +28,7 @@ public class MedTestResource {
 
 	@Inject
 	@RestClient
-	PatientEndpoint patients;
+	PersonEndpoint people;
 
 	@POST
 	@Path("/create")
@@ -64,7 +64,7 @@ public class MedTestResource {
 	@Path("/forUser/{id}")
 	@Fallback(fallbackMethod = "forUserFallback")
 	public Uni<Response> forUser(@PathParam Long id) {
-		PatientDTO p = patients.findById(id);
+		PersonDTO p = people.findById(id);
 
 		if (p.id.equals(id)) {
 			return MedTest.find("patientID", id).list().onItem()

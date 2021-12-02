@@ -1,15 +1,15 @@
 package soa.ehealth.medtests.endpoints;
 
-public class PatientDTO {
+public class PersonDTO {
 	public Long id;
 	public String name;
-	public Integer age;
+	public String age;
 	public String address;
 	public String phoneNum;
 
-	public PatientDTO() { }
+	public PersonDTO() { }
 
-	public PatientDTO(Long id, String name, Integer age, String address, String phoneNum) {
+	public PersonDTO(Long id, String name, String age, String address, String phoneNum) {
 		this.id = id;
 		this.name = name;
 		this.age = age;
