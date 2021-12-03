@@ -100,7 +100,7 @@ public class RestrictionResourceTest {
 	public void retrieveAllForUser() {
 		when(people.findById(1L)).thenReturn(DataHelper.getPatientRecord().person);
 		when(medTests.findByPatientId(1L)).thenReturn(List.of());
-		when(certs.findByPatientId(1L)).thenReturn(List.of());
+		when(certs.findByPersonId(1L)).thenReturn(List.of());
 
 		PersonMedRecord record = DataHelper.getPatientRecord();
 

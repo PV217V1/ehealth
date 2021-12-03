@@ -1,7 +1,8 @@
 package org.ehealth.restrictions.resources;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.quarkus.logging.Log;
 import org.eclipse.microprofile.faulttolerance.Fallback;
-import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -41,188 +42,200 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class RestrictionsResource {
 
-    @Inject
-    @RestClient
-    PeopleEndpoint people;
+	@Inject
+	@RestClient
+	PeopleEndpoint people;
 
-    @Inject
-    @RestClient
-    CertificateEndpoint certs;
+	@Inject
+	@RestClient
+	CertificateEndpoint certs;
 
-    @Inject
-    @RestClient
-    MedTestsEndpoint tests;
+	@Inject
+	@RestClient
+	MedTestsEndpoint tests;
 
-    @Inject
-    RestrictionProcessor restrictionProcessor;
+	@Inject
+	RestrictionProcessor restrictionProcessor;
 
-    /**
-     * <strong>C</strong>RUD operation
-     *
-     * @param item the {@link Restriction} to introduce
-     * @return 201 on success
-     */
-    @POST
-    @Path("/create")
-    @Transactional
-    @Counted(name = "restrictions.createCalls", description = "How many times this endpoint was called.")
-    @Timed(name = "restrictions.createDuration", description = "How long does it take to persist a restriction.")
-    public Response create(Restriction item) {
-        item.persist();
-        return Response.accepted(item)
-                .status(Response.Status.CREATED)
-                .build();
-    }
+	MeterRegistry registry;
 
-    /**
-     * C<strong>R</strong>UD operation for all {@link Restriction}
-     *
-     * @return 200 on success
-     */
-    @GET
-    @Path("")
-    public Response retrieveAll() {
-        return Response.ok(Restriction.listAll())
-                .build();
-    }
+	public RestrictionsResource(MeterRegistry registry) {
+		this.registry = registry;
+	}
 
-    /**
-     * C<strong>R</strong>UD operation for all {@link Restriction}s of a given scope
-     *
-     * @param scope the scope to filter by
-     * @return 200 on success
-     */
-    @GET
-    @Path("/scoped/{scope}")
-    public Response retrieveAll(@PathParam RestrictionScope scope) {
-        return Response.ok(Restriction.find("scope", scope).list())
-                .build();
-    }
+	/**
+	 * <strong>C</strong>RUD operation
+	 *
+	 * @param item the {@link Restriction} to introduce
+	 * @return 201 on success
+	 */
+	@POST
+	@Path("/create")
+	@Transactional
+	@Timed(name = "restrictions.createDuration", description = "How long does it take to persist a restriction.")
+	public Response create(Restriction item) {
+		item.persist();
+		return Response.accepted(item)
+				.status(Response.Status.CREATED)
+				.build();
+	}
 
-    /**
-     * C<strong>R</strong>UD operation for single {@link Restriction}
-     *
-     * @param id the identifier of the {@link Restriction}
-     * @return 200 on success
-     */
-    @GET
-    @Path("/{id}")
-    public Response retrieve(@PathParam Long id) {
-        return Response.ok(Restriction.findById(id))
-                .build();
-    }
+	/**
+	 * C<strong>R</strong>UD operation for all {@link Restriction}
+	 *
+	 * @return 200 on success
+	 */
+	@GET
+	@Path("")
+	public Response retrieveAll() {
+		return Response.ok(Restriction.listAll())
+				.build();
+	}
 
-    /**
-     * CR<strong>U</strong>D operation
-     *
-     * @param id       the identifier of the {@link Restriction} to update
-     * @param newValue the new values to store
-     * @return 200 on success
-     */
-    @PUT
-    @Path("/{id}/update")
-    public Response update(@PathParam Long id, Restriction newValue) {
-        Restriction found = Restriction.findById(id);
+	/**
+	 * C<strong>R</strong>UD operation for all {@link Restriction}s of a given scope
+	 *
+	 * @param scope the scope to filter by
+	 * @return 200 on success
+	 */
+	@GET
+	@Path("/scoped/{scope}")
+	public Response retrieveAll(@PathParam RestrictionScope scope) {
+		return Response.ok(Restriction.find("scope", scope).list())
+				.build();
+	}
 
-        if (found == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+	/**
+	 * C<strong>R</strong>UD operation for single {@link Restriction}
+	 *
+	 * @param id the identifier of the {@link Restriction}
+	 * @return 200 on success
+	 */
+	@GET
+	@Path("/{id}")
+	public Response retrieve(@PathParam Long id) {
+		return Response.ok(Restriction.findById(id))
+				.build();
+	}
 
-        found.setTitle(newValue.getTitle());
-        found.setDescription(newValue.getDescription());
-        found.setExpired(newValue.getExpired());
+	/**
+	 * CR<strong>U</strong>D operation
+	 *
+	 * @param id       the identifier of the {@link Restriction} to update
+	 * @param newValue the new values to store
+	 * @return 200 on success
+	 */
+	@PUT
+	@Path("/{id}/update")
+	public Response update(@PathParam Long id, Restriction newValue) {
+		Restriction found = Restriction.findById(id);
 
-        return Response.ok(found).build();
-    }
+		if (found == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
-    /**
-     * Function to return all {@link Restriction}s for given person's medical record
-     *
-     * @param id the parson's identifier
-     * @return 200 on success
-     */
-    @GET
-    @Path("/forUser/{id}")
-    @APIResponses({
-            @APIResponse(responseCode = "503",
-                    description = "Could not contact dependent services, " +
-                            "cannot evaluate the person, " +
-                            "returning Global restrictions only!"),
-            @APIResponse(responseCode = "200",
-                    description = "Returns the restrictions that person " +
-                            "with provided certificates and tests must follow!")
-    })
-    @Fallback(fallbackMethod = "forPersonFallback")
-    @Counted(name = "restrictions.forPersonCalls", description = "How many times this endpoint was called.")
-    @Timed(name = "restrictions.forPersonDuration", description = "How long does it take to lookup restrictions for people.")
-    public Response forPerson(@PathParam Long id) {
-        PersonDTO p;
-        List<MedCertificateDTO> medCerts;
-        List<MedTestDTO> medTests;
+		found.setTitle(newValue.getTitle());
+		found.setDescription(newValue.getDescription());
+		found.setExpired(newValue.getExpired());
 
-        try {
-            p = people.findById(id);
-        } catch (Exception e) {
-            return Response.ok(restrictionProcessor.getGlobalRestrictions()).
-                    status(Response.Status.SERVICE_UNAVAILABLE)
-                    .build();
-        }
+		return Response.ok(found).build();
+	}
 
-        try {
-            medCerts = certs.findByPatientId(id);
-        } catch (Exception e) {
-            return Response.ok(restrictionProcessor.getGlobalRestrictions()).
-                    status(Response.Status.SERVICE_UNAVAILABLE)
-                    .build();
-        }
+	/**
+	 * Function to return all {@link Restriction}s for given person's medical record
+	 *
+	 * @param id the parson's identifier
+	 * @return 200 on success
+	 */
+	@GET
+	@Path("/forUser/{id}")
+	@APIResponses({
+			@APIResponse(responseCode = "503",
+					description = "Could not contact dependent services, " +
+							"cannot evaluate the person, " +
+							"returning Global restrictions only!"),
+			@APIResponse(responseCode = "200",
+					description = "Returns the restrictions that person " +
+							"with provided certificates and tests must follow!")
+	})
+	@Fallback(fallbackMethod = "forPersonFallback")
+	@Timed(name = "restrictions.forPersonDuration", description = "How long does it take to lookup restrictions for people.")
+	public Response forPerson(@PathParam Long id) {
+		PersonDTO p;
+		List<MedCertificateDTO> medCerts;
+		List<MedTestDTO> medTests;
 
-        try {
-            medTests = tests.findByPatientId(id);
-        } catch (Exception e) {
-            return Response.ok(restrictionProcessor.getGlobalRestrictions()).
-                    status(Response.Status.SERVICE_UNAVAILABLE)
-                    .build();
-        }
+		try {
+			p = people.findById(id);
+		} catch (Exception e) {
+			Log.error(e);
+			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
+					status(Response.Status.SERVICE_UNAVAILABLE)
+					.build();
+		}
 
-        return Response.ok(restrictionProcessor.process(new PersonMedRecord(p, medCerts, medTests)))
-                .build();
-    }
+		try {
+			medCerts = certs.findByPersonId(id);
+		} catch (Exception e) {
+			Log.error(e);
+			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
+					status(Response.Status.SERVICE_UNAVAILABLE)
+					.build();
+		}
 
-    /**
-     * Function to return all {@link Restriction}s for given date
-     *
-     * @param date the date to find applicable restrictions for
-     * @return 200 on success
-     */
-    @GET
-    @Path("/forDate/{date}")
-    @Parameter(name = "date", description = "The date in yyyy-mm-dd format", example = "2021-08-22")
-    @Counted(name = "restrictions.forDateCalls", description = "How many times this endpoint was called.")
-    @Timed(name = "restrictions.forDateDuration", description = "How long does it take to lookup restrictions for dates.")
-    public Response forDate(@PathParam LocalDate date) {
-        return Response.ok(restrictionProcessor.getRestrictionsForDate(date)).build();
-    }
+		try {
+			medTests = tests.findByPatientId(id);
+		} catch (Exception e) {
+			Log.error(e);
+			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
+					status(Response.Status.SERVICE_UNAVAILABLE)
+					.build();
+		}
 
-    /**
-     * CRU<strong>D</strong> operation
-     *
-     * @param id the identifier of the {@link Restriction} to delete
-     * @return 200 on success
-     */
-    @DELETE
-    @Path("/{id}/delete")
-    @Transactional
-    @Counted(name = "restrictions.deleteCalls", description = "How many times this endpoint was called.")
-    @Timed(name = "restrictions.deleteDuration", description = "How long does it take to delete a restriction.")
-    public Response delete(@PathParam Long id) {
-        boolean res = Restriction.deleteById(id);
-        return res ? Response.ok().build() : Response.noContent().build();
-    }
+		if (medCerts.size() > 0) {
+			registry.counter("withCerts").increment();
+		}
+		if (medTests.size() > 0) {
+			registry.counter("withMedTests").increment();
+		}
 
-    // Used as a fallback method
-    @SuppressWarnings("unused")
-    public Response forPersonFallback(Long id) {
-        return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                .build();
-    }
+		return Response.ok(restrictionProcessor.process(new PersonMedRecord(p, medCerts, medTests)))
+				.build();
+	}
+
+	/**
+	 * Function to return all {@link Restriction}s for given date
+	 *
+	 * @param date the date to find applicable restrictions for
+	 * @return 200 on success
+	 */
+	@GET
+	@Path("/forDate/{date}")
+	@Parameter(name = "date", description = "The date in yyyy-mm-dd format", example = "2021-08-22")
+	@Timed(name = "restrictions.forDateDuration", description = "How long does it take to lookup restrictions for dates.")
+	public Response forDate(@PathParam LocalDate date) {
+		return Response.ok(restrictionProcessor.getRestrictionsForDate(date)).build();
+	}
+
+	/**
+	 * CRU<strong>D</strong> operation
+	 *
+	 * @param id the identifier of the {@link Restriction} to delete
+	 * @return 200 on success
+	 */
+	@DELETE
+	@Path("/{id}/delete")
+	@Transactional
+	@Timed(name = "restrictions.deleteDuration", description = "How long does it take to delete a restriction.")
+	public Response delete(@PathParam Long id) {
+		boolean res = Restriction.deleteById(id);
+		return res ? Response.ok().build() : Response.noContent().build();
+	}
+
+	// Used as a fallback method
+	@SuppressWarnings("unused")
+	public Response forPersonFallback(Long id) {
+		return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+				.build();
+	}
 }

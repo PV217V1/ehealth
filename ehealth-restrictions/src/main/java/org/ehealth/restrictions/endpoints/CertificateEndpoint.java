@@ -27,8 +27,8 @@ public interface CertificateEndpoint {
 	 * @return list of all certificates issued to the patient
 	 */
 	@GET
-	@Path("/forUser/{id}")
-	List<MedCertificateDTO> findByPatientId(@PathParam Long id);
+	@Path("/forPerson/{id}")
+	List<MedCertificateDTO> findByPersonId(@PathParam Long id);
 
 	/**
 	 * Endpoint to retrieve certificate by its database identifier

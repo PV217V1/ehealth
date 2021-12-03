@@ -11,7 +11,7 @@ import org.ehealth.restrictions.resiliency.base.BaseHealthCheck;
 @Liveness
 public class CertificatesLivenessCheck extends BaseHealthCheck {
 
-	@ConfigProperty(name = "certificates-service-endpoint")
+	@ConfigProperty(name = "certificates-service-endpoint/mp-rest/url")
 	String url;
 
 	@Override

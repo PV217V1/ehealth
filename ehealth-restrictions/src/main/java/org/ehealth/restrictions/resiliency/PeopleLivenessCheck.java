@@ -11,7 +11,7 @@ import org.ehealth.restrictions.resiliency.base.BaseHealthCheck;
 @Liveness
 public class PeopleLivenessCheck extends BaseHealthCheck {
 
-    @ConfigProperty(name = "people-service-endpoint")
+    @ConfigProperty(name = "people-service-endpoint/mp-rest/url")
     String url;
 
     @Override
