@@ -3,10 +3,11 @@ package soa.ehealth.dto;
 import javax.persistence.*;
 
 
-@Entity
+@Entity(name = "person")
+@Table(name = "person")
 public class Person {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //@Column(length = 40, unique = true)
     public String name;
@@ -16,15 +17,6 @@ public class Person {
     public String sex;
     public String address;
     public String telephone;
-
-    public String getSex() {
-        return sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public String email;
     public Person() {
 
@@ -69,7 +61,12 @@ public class Person {
     public String getTelephone() {
         return telephone;
     }
-
+    public String getSex() {
+        return sex;
+    }
+    public String getEmail() {
+        return email;
+    }
     @Override
     public String toString() {
         return "Person{" +
