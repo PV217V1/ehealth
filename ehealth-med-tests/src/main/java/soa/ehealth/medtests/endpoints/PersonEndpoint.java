@@ -20,6 +20,6 @@ import javax.ws.rs.core.MediaType;
 public interface PersonEndpoint {
 
 	@GET
-	@Path("/{id}")
+	@Path("/selectById/{id}")
 	Uni<PersonDTO> findById(@PathParam("id") Long id);
 }
