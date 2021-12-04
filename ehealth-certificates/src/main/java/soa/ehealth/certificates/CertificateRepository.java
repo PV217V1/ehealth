@@ -19,7 +19,7 @@ public class CertificateRepository {
     public Certificate updateCertificate(Long id, Certificate update) {
         Certificate certificate = Certificate.findById(id);
          if (certificate == null) {
-             throw new NotFoundException("Certificate id" + id + " not found");
+             throw new NotFoundException("Certificate id " + id + " not found");
          }
 
          certificate.update(update);

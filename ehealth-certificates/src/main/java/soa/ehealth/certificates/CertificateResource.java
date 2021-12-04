@@ -1,13 +1,16 @@
 package soa.ehealth.certificates;
 
+import soa.ehealth.certificates.dto.ErrorDto;
 import soa.ehealth.certificates.entity.Certificate;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/certificates")
+@Produces(MediaType.APPLICATION_JSON)
 public class CertificateResource {
 
     @Inject
@@ -22,13 +25,24 @@ public class CertificateResource {
 
     @PUT
     @Path("/{id}/update")
-    public Certificate update(@PathParam("id") Long id, Certificate update) {
-        Certificate updated = repository.updateCertificate(id, update);
-        return updated;
+    public Response update(@PathParam("id") Long id, Certificate update) {
+        Certificate updated;
+
+        try {
+            updated = repository.updateCertificate(id, update);
+        } catch (NotFoundException e) {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorDto(e.getMessage()))
+                    .build();
+        }
+
+        return Response.ok(updated).build();
     }
 
     @DELETE
     @Path("/{id}/delete")
+    @Produces(MediaType.TEXT_PLAIN)
     public Response delete(@PathParam("id") Long id) {
         boolean deleted = repository.deleteCertificate(id);
 
@@ -48,7 +62,7 @@ public class CertificateResource {
         if (certificate == null) {
             return Response
                     .status(Response.Status.NOT_FOUND)
-                    .entity("Certificate" + id + "not found")
+                    .entity(new ErrorDto("Certificate id " + id + " not found"))
                     .build();
         }
 
@@ -63,7 +77,7 @@ public class CertificateResource {
         if (certificate == null) {
             return Response
                     .status(Response.Status.NOT_FOUND)
-                    .entity("Certificate for person with" + id + "not found")
+                    .entity(new ErrorDto("Certificate for person with id " + id + " not found"))
                     .build();
         }
 
