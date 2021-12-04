@@ -94,7 +94,7 @@ public class MedTestResource {
 	/**
 	 * Function to return all {@link MedTest}s for a Person by their ID
 	 *
-	 * @param id the patient's identifier
+	 * @param id the person's identifier
 	 * @return 200 on success
 	 */
 	@APIResponses({

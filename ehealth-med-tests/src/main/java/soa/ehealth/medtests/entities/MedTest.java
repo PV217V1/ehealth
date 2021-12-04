@@ -36,8 +36,8 @@ public class MedTest extends PanacheEntity {
 		return personId;
 	}
 
-	public void setPersonId(@NotNull Long patientID) {
-		this.personId = patientID;
+	public void setPersonId(@NotNull Long personId) {
+		this.personId = personId;
 	}
 
 	public @NotNull LocalDate getTestedAt() {
