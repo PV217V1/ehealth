@@ -19,6 +19,12 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public interface PersonEndpoint {
 
+	/**
+	 * Endpoint to retrieve person by their database identifier
+	 *
+	 * @param id the DB assigned identifier
+	 * @return the {@link PersonDTO} for the person, {@link null} if not found
+	 */
 	@GET
 	@Path("/selectById/{id}")
 	Uni<PersonDTO> findById(@PathParam("id") Long id);

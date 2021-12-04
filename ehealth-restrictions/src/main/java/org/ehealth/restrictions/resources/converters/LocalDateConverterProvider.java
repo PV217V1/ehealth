@@ -8,13 +8,13 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 
 @Provider
-public class LocalDateConverterProvider  implements ParamConverterProvider {
+public class LocalDateConverterProvider implements ParamConverterProvider {
 
-    @Override
-    public <T> ParamConverter<T> getConverter(Class<T> forClass, Type type, Annotation[] annotations) {
-        if(forClass.equals(LocalDate.class)){
-            return (ParamConverter<T>) new LocalDateConverter();
-        }
-        return null;
-    }
+	@Override
+	public <T> ParamConverter<T> getConverter(Class<T> forClass, Type type, Annotation[] annotations) {
+		if (forClass.equals(LocalDate.class)) {
+			return (ParamConverter<T>) new LocalDateConverter();
+		}
+		return null;
+	}
 }

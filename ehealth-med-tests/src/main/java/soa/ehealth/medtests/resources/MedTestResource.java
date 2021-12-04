@@ -20,6 +20,7 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import soa.ehealth.medtests.endpoints.CreateMedTestDTO;
 import soa.ehealth.medtests.endpoints.PersonDTO;
 import soa.ehealth.medtests.endpoints.PersonEndpoint;
 import soa.ehealth.medtests.entities.MedTest;
@@ -45,11 +46,18 @@ public class MedTestResource {
 	 */
 	@POST
 	@Path("/create")
+	@APIResponses({
+			@APIResponse(responseCode = "201", description = "Inserts the new medical test into a database")
+	})
 	@Transactional
 	@Counted(name = "medtests.createCalls", description = "How many times this endpoint was called.")
 	@Timed(name = "medtests.createDuration", description = "How long does it take to persist a medical test.")
-	public Uni<Response> create(MedTest item) {
-		return item.persist().onItem()
+	public Uni<Response> create(CreateMedTestDTO item) {
+		MedTest test = new MedTest(item.personId, item.testedAt, item.validThroughSeconds, item.testType);
+
+		// Validation is overrated
+
+		return test.persist().onItem()
 				.transform(c -> Response.ok(c).status(Response.Status.CREATED).build());
 	}
 

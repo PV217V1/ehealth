@@ -6,6 +6,9 @@ import org.ehealth.restrictions.endpoints.dto.people.PersonDTO;
 
 import java.util.List;
 
+/**
+ * Combined information about the person including certificate and all tests
+ */
 public class PersonMedRecord {
 	public PersonDTO person;
 
