@@ -40,7 +40,7 @@ public class RestrictionProcessorTest {
 	}
 
 	@Test
-	void retrieveVaccinatedRestrictions() {
+	void retrieveNotTestedButVaccinatedRestrictions() {
 		Restriction.persist(DataHelper.getRestrictions());
 
 		PersonMedRecord record = DataHelper.getPatientRecord();
@@ -48,7 +48,7 @@ public class RestrictionProcessorTest {
 
 		List<Restriction> processed = processor.process(record);
 
-		assertContains(processed, 1, 2, 3, 10, 11, 12);
+		assertContains(processed, 1, 2, 3, 10, 11, 12, 13, 14, 15);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class RestrictionProcessorTest {
 
 		List<Restriction> processed = processor.process(record);
 
-		assertContains(processed, 1, 2, 3, 13, 14, 15);
+		assertContains(processed, 1, 2, 3, 4, 5, 6);
 	}
 
 	@Test

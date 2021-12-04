@@ -29,7 +29,9 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 
 		// When vaccinated without a valid test global and not tested restrictions apply
 		if (record.certificate != null) {
-			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.NOT_TESTED))
+			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL,
+							RestrictionScope.VACCINATED,
+							RestrictionScope.NOT_TESTED))
 					.list();
 		}
 
