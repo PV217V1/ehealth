@@ -5,7 +5,7 @@
 
 ### Purpose
 This microservice is responsible for CRUD operations for restrictions as they are introduced and revoked by the government.
-This service depends on `ehealth-patients` and `ehealth-certificates` and will display different results based
+This service depends on `ehealth-people` and `ehealth-certificates` and will display different results based
 on whether the current user is vaccinated/contracted Covid-19/un-vaccinated.
 
 ### Endpoints
@@ -22,6 +22,11 @@ on whether the current user is vaccinated/contracted Covid-19/un-vaccinated.
 
 ### Running the microservice
 
+> I included my run configurations for IntelliJ IDEA for convenience.
+That is the preferred way of starting the dev environment.
+
+#### OR
+
 1. The following environment variables must be defined either through\
    the system or a `.env` file in the same directory as `docker-compose.yml`
 
@@ -31,6 +36,7 @@ on whether the current user is vaccinated/contracted Covid-19/un-vaccinated.
 > PATIENTS_ENDPOINT_PORT=PORT\
 > CERTIFICATES_ENDPOINT_PORT=PORT\
 > MED_TESTS_ENDPOINT_PORT=PORT\
+> SHARED_POSTGRES_PORT=PORT\
 > RESTRICTIONS_ENDPOINT_PORT=PORT
 
 
