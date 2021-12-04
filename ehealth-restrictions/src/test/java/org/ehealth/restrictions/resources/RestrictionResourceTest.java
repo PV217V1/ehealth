@@ -107,7 +107,7 @@ public class RestrictionResourceTest {
 		given()
 				.body(record)
 				.contentType("application/json")
-				.when().get("/restrictions/forUser/" + 1)
+				.when().get("/restrictions/forPerson/" + 1)
 				.then()
 				.statusCode(200)
 				.body("title", containsInAnyOrder

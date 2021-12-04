@@ -5,12 +5,12 @@
 
 ### Purpose
 This microservice is responsible for CRUD operations for restrictions as they are introduced and revoked by the government.
-This service depends on `ehealth-people` and `ehealth-certificates` and will display different results based
-on whether the current user is vaccinated/contracted Covid-19/un-vaccinated.
+This service depends on `ehealth-people`, `ehealth-med-tests` and `ehealth-certificates` and will display different results based
+on whether the current user is vaccinated/contracted Covid-19/has a valid test.
 
 ### Endpoints
 
-- HTTP is exposed on port `8110`
+- HTTP is exposed on port `${RESTRICTIONS_ENDPOINT_PORT}`
 - Prometheus is using the default `9090`
 - Grafana is also on the default `3000`
 

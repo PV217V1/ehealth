@@ -1,6 +1,7 @@
 package soa.ehealth.medtests.entities;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
  * Entity for representing a medical test performed by a person
  */
 @Entity(name = "e_medtests")
+@Schema
 public class MedTest extends PanacheEntity {
 
 	@NotNull

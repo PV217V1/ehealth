@@ -155,7 +155,7 @@ public class RestrictionsResource {
 	 * @return 200 on success
 	 */
 	@GET
-	@Path("/forUser/{id}")
+	@Path("/forPerson/{id}")
 	@APIResponses({
 			@APIResponse(responseCode = "503",
 					description = "Could not contact dependent services, " +
