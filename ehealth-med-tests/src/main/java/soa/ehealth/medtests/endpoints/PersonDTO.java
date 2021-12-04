@@ -4,11 +4,36 @@ package soa.ehealth.medtests.endpoints;
  * Person DTO as defined by the <strong>ehealth-people</strong> endpoint
  */
 public class PersonDTO {
+
+	/**
+	 * The database assigned ID
+	 */
 	public Long id;
+
+	/**
+	 * Name and Surname of the person
+	 */
 	public String name;
+
+	/**
+	 * The age of the person as a string for some reason
+	 */
 	public String age;
+
+	/**
+	 * The sex of the person
+	 */
+	public String sex;
+
+	/**
+	 * Address provided by the person
+	 */
 	public String address;
-	public String phoneNum;
+
+	/**
+	 * Phone contact for the person
+	 */
+	public String telephone;
 
 	public PersonDTO() { }
 
@@ -17,6 +42,6 @@ public class PersonDTO {
 		this.name = name;
 		this.age = age;
 		this.address = address;
-		this.phoneNum = phoneNum;
+		this.telephone = phoneNum;
 	}
 }

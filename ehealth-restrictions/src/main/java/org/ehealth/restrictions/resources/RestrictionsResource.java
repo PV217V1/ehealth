@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.ehealth.restrictions.endpoints.dto.PersonMedRecord;
+import org.ehealth.restrictions.endpoints.restrictions.CreateRestrictionDTO;
 import org.ehealth.restrictions.entities.Restriction;
 import org.ehealth.restrictions.entities.RestrictionScope;
 import org.ehealth.restrictions.endpoints.CertificateEndpoint;
@@ -73,8 +74,14 @@ public class RestrictionsResource {
 	@Path("/create")
 	@Transactional
 	@Timed(name = "restrictions.createDuration", description = "How long does it take to persist a restriction.")
-	public Response create(Restriction item) {
-		item.persist();
+	public Response create(CreateRestrictionDTO item) {
+		Restriction restriction =
+				new Restriction(item.title, item.description, item.issued,
+						item.validSince, item.expired, item.scope);
+
+		// Validation is overrated ;)
+
+		restriction.persist();
 		return Response.accepted(item)
 				.status(Response.Status.CREATED)
 				.build();
