@@ -12,6 +12,16 @@ services:
     volumes:
       - ${HOST_DIR}:/var/lib/postgresql/data
 
+  postgres-shared:
+    image: postgres:14.0
+    container_name: postgres-shared
+    ports:
+      - "${SHARED_POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - ${HOST_DIR}/shared-pmc-DB:/var/lib/postgresql/data
+
   prometheus:
     image: prom/prometheus:v2.30.3
     container_name: prometheus
@@ -22,12 +32,16 @@ services:
         target: /etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   grafana:
     image: grafana/grafana:8.2.1
     container_name: grafana
     ports:
       - 3000:3000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   jaeger:
     image: jaegertracing/all-in-one:1.27.0
