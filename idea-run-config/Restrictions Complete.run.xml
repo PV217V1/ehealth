@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Restrictions Complete" type="CompoundRunConfigurationType">
+    <toRun name="ehealth-patients" type="QuarkusRunConfigurationType" />
+    <toRun name="ehealth-restrictions" type="QuarkusRunConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

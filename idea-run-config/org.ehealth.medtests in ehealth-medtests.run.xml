@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ehealth-medtests Tests" type="JUnit" factoryName="JUnit">
+    <module name="ehealth-med-tests" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="org.ehealth.restrictions.processing.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <option name="PACKAGE_NAME" value="soa.ehealth.medtests" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="package" />
+    <envs>
+      <env name="CERTIFICATES_ENDPOINT_PORT" value="4432" />
+      <env name="PEOPLE_ENDPOINT_PORT" value="4431" />
+      <env name="MED_TESTS_ENDPOINT_PORT" value="4430" />
+      <env name="SHARED_POSTGRES_PORT" value="5433" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
