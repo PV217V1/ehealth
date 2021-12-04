@@ -30,6 +30,13 @@ services:
       - type: bind
         source: ./prometheus.yml
         target: /etc/prometheus/prometheus.yml
+    environment:
+      - "PATIENTS_ENDPOINT_PORT=${PATIENTS_ENDPOINT_PORT}"
+      - "CERTIFICATES_ENDPOINT_PORT=${CERTIFICATES_ENDPOINT_PORT}"
+      - "MED_TESTS_ENDPOINT_PORT=${MED_TESTS_ENDPOINT_PORT}"
+      - "RESTRICTIONS_ENDPOINT_PORT=${RESTRICTIONS_ENDPOINT_PORT}"
+# https://github.com/prometheus/prometheus/issues/2357
+
     ports:
       - 9090:9090
     extra_hosts:

@@ -8,7 +8,25 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-  - job_name: 'ehealth'
+  - job_name: 'ehealth-people'
     metrics_path: /q/metrics
     static_configs:
-      - targets: ['host.docker.internal:8080', 'host.docker.internal:8090', 'host.docker.internal:8100', 'host.docker.internal:8110']
+      - targets: [ 'host.docker.internal:8080' ]
+  - job_name: 'ehealth-medtests'
+    metrics_path: /q/metrics
+    static_configs:
+      - targets: [ 'host.docker.internal:8090' ]
+  - job_name: 'ehealth-certificates'
+    metrics_path: /q/metrics
+    static_configs:
+      - targets: [ 'host.docker.internal:8100' ]
+  - job_name: 'ehealth-restrictions'
+    metrics_path: /q/metrics
+    static_configs:
+      - targets: [ 'host.docker.internal:8110' ]
+
+#      - targets: ['host.docker.internal:${PATIENTS_ENDPOINT_PORT}',
+#                  'host.docker.internal:${CERTIFICATES_ENDPOINT_PORT}',
+#                  'host.docker.internal:${MED_TESTS_ENDPOINT_PORT}',
+#                  'host.docker.internal:${RESTRICTIONS_ENDPOINT_PORT}']
+# BECAUSE PROMETHEUS DEVS ARE JUST SELFCENTERED DUMMIES THEY ARE AGAINST ENVIRONMENT VARIABLE EXPANSION"
