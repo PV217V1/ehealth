@@ -21,7 +21,7 @@ public enum RestrictionScope {
 	/**
 	 * This restriction is applied to all who undergone PCR/Antigen or any other valid test
 	 */
-	TESTED,
+	NOT_TESTED,
 	/**
 	 * This restriction is applied to all who are not tested nor vaccinated
 	 */

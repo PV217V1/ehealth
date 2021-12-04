@@ -1,7 +1,7 @@
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
 VALUES (nextval('hibernate_sequence'), 'Some Restriction 1', 'Description 1' ,0, '2021-04-12', '2021-04-14', '2021-07-01');
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
-VALUES (nextval('hibernate_sequence'), 'Some Restriction 2', 'Description 2' ,1, '2021-05-08', '2021-05-10', NULL);
+VALUES (nextval('hibernate_sequence'), 'Some Restriction 2', 'Description 2' ,4, '2021-05-08', '2021-05-10', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
 VALUES (nextval('hibernate_sequence'), 'Some Restriction 3', 'Description 3' ,1, '2021-08-18', '2021-08-20', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
@@ -11,9 +11,9 @@ VALUES (nextval('hibernate_sequence'), 'Some Restriction 5', 'Description 5' ,0,
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
 VALUES (nextval('hibernate_sequence'), 'Some Restriction 6', 'Description 6' ,1, '2021-04-10', '2021-04-14', '2021-05-14');
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
-VALUES (nextval('hibernate_sequence'), 'Some Restriction 7', 'Description 7' ,1, '2021-04-10', '2021-04-14', NULL);
+VALUES (nextval('hibernate_sequence'), 'Some Restriction 7', 'Description 7' ,4, '2021-04-10', '2021-04-14', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
-VALUES (nextval('hibernate_sequence'), 'Some Restriction 8', 'Description 8' ,1, '2020-04-03', '2020-04-04', NULL);
+VALUES (nextval('hibernate_sequence'), 'Some Restriction 8', 'Description 8' ,4, '2020-04-03', '2020-04-04', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
 VALUES (nextval('hibernate_sequence'), 'Some Restriction 9', 'Description 9' ,3, '2020-06-02', '2020-06-04', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
@@ -27,7 +27,7 @@ VALUES (nextval('hibernate_sequence'), 'Some Restriction 13', 'Description 13', 
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
 VALUES (nextval('hibernate_sequence'), 'Some Restriction 14', 'Description 14', 0, '2021-02-03', '2021-02-04', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
-VALUES (nextval('hibernate_sequence'), 'Some Restriction 15', 'Description 15', 1, '2021-07-02', '2021-07-04', NULL);
+VALUES (nextval('hibernate_sequence'), 'Some Restriction 15', 'Description 15', 2, '2021-07-02', '2021-07-04', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)
 VALUES (nextval('hibernate_sequence'), 'Some Restriction 16', 'Description 16', 4, '2021-08-09', '2021-08-12', NULL);
 INSERT INTO e_restriction(id, title, description, scope, issued, validSince, expired)

@@ -63,15 +63,15 @@ public class DataHelper {
                 new Restriction("13", "Description 13",
                         LocalDate.of(2021, Month.NOVEMBER, 18),
                         LocalDate.of(2021, Month.NOVEMBER, 20),
-                        null, RestrictionScope.TESTED),
+                        null, RestrictionScope.NOT_TESTED),
                 new Restriction("14", "Description 14",
                         LocalDate.of(2021, Month.NOVEMBER, 18),
                         LocalDate.of(2021, Month.NOVEMBER, 20),
-                        null, RestrictionScope.TESTED),
+                        null, RestrictionScope.NOT_TESTED),
                 new Restriction("15", "Description 15",
                         LocalDate.of(2021, Month.NOVEMBER, 18),
                         LocalDate.of(2021, Month.NOVEMBER, 20),
-                        null, RestrictionScope.TESTED)
+                        null, RestrictionScope.NOT_TESTED)
         );
     }
 

@@ -16,16 +16,20 @@ public class RestrictionProcessorImpl implements RestrictionProcessor {
 	@Override
 	@NotNull
 	public List<Restriction> process(PersonMedRecord record) {
+		// When vaccinated and with a valid test only the global restrictions apply
 		if (record.certificate != null && !record.tests.isEmpty()) {
 			return getGlobalRestrictions();
 		}
 
-		if (record.certificate != null) {
-			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.VACCINATED))
+		// When not vaccinated but with a valid test global and non-vaccinated restrictions apply
+		if (record.certificate == null && !record.tests.isEmpty()) {
+			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.NOT_VACCINATED))
 					.list();
 		}
-		if (!record.tests.isEmpty()) {
-			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.TESTED))
+
+		// When vaccinated without a valid test global and not tested restrictions apply
+		if (record.certificate != null) {
+			return Restriction.find(scopeQuery(RestrictionScope.GLOBAL, RestrictionScope.NOT_TESTED))
 					.list();
 		}
 
