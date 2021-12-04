@@ -162,7 +162,7 @@ public class RestrictionsResource {
 	@Timed(name = "restrictions.forPersonDuration", description = "How long does it take to lookup restrictions for people.")
 	public Response forPerson(@PathParam Long id) {
 		PersonDTO p;
-		List<MedCertificateDTO> medCerts;
+		MedCertificateDTO medCert;
 		List<MedTestDTO> medTests;
 
 		try {
@@ -175,7 +175,7 @@ public class RestrictionsResource {
 		}
 
 		try {
-			medCerts = certs.findByPersonId(id);
+			medCert = certs.findByPersonId(id);
 		} catch (Exception e) {
 			Log.error(e);
 			return Response.ok(restrictionProcessor.getGlobalRestrictions()).
@@ -192,14 +192,14 @@ public class RestrictionsResource {
 					.build();
 		}
 
-		if (medCerts.size() > 0) {
+		if (medCert != null) {
 			registry.counter("withCerts").increment();
 		}
 		if (medTests.size() > 0) {
 			registry.counter("withMedTests").increment();
 		}
 
-		return Response.ok(restrictionProcessor.process(new PersonMedRecord(p, medCerts, medTests)))
+		return Response.ok(restrictionProcessor.process(new PersonMedRecord(p, medCert, medTests)))
 				.build();
 	}
 

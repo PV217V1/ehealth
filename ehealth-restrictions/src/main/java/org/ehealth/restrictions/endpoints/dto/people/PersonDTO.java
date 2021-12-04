@@ -1,31 +1,31 @@
 package org.ehealth.restrictions.endpoints.dto.people;
 
 /**
- * Patient DTO as defined by the <strong>ehealth-patients</strong> endpoint
+ * Person DTO as defined by the <strong>ehealth-people</strong> endpoint
  */
 public class PersonDTO {
 	/**
-	 * Name and Surname of the patient
+	 * Name and Surname of the person
 	 */
 	public String name;
 
 	/**
-	 * The age of the patient as a string for some reason
+	 * The age of the person as a string for some reason
 	 */
 	public String age;
 
 	/**
-	 * The sex of the patient
+	 * The sex of the person
 	 */
 	public String sex;
 
 	/**
-	 * Address provided by the patient
+	 * Address provided by the person
 	 */
 	public String address;
 
 	/**
-	 * Phone contact for the patient
+	 * Phone contact for the person
 	 */
 	public String telephone;
 

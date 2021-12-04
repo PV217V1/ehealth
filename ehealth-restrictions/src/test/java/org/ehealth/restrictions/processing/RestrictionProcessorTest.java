@@ -44,7 +44,7 @@ public class RestrictionProcessorTest {
 		Restriction.persist(DataHelper.getRestrictions());
 
 		PersonMedRecord record = DataHelper.getPatientRecord();
-		record.certificates = List.of(new MedCertificateDTO());
+		record.certificate = new MedCertificateDTO();
 
 		List<Restriction> processed = processor.process(record);
 
@@ -80,7 +80,7 @@ public class RestrictionProcessorTest {
 
 		PersonMedRecord record = DataHelper.getPatientRecord();
 		record.tests = List.of(new MedTestDTO());
-		record.certificates = List.of(new MedCertificateDTO());
+		record.certificate = new MedCertificateDTO();
 
 		List<Restriction> processed = processor.process(record);
 

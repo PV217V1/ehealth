@@ -16,7 +16,7 @@ on whether the current user is vaccinated/contracted Covid-19/un-vaccinated.
 
 ### Endpoint Dependencies
 
-- ehealth-patients
+- ehealth-people
 - ehealth-certificates
 - ehealth-medtests
 

@@ -5,29 +5,29 @@ import org.ehealth.restrictions.endpoints.dto.medtests.MedTestDTO;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
  * Contract definition for the ehealth-medtests microservice
  */
-@Path("/certificates")
+@Path("/medtests")
 @RegisterRestClient(configKey = "tests-service-endpoint")
 @ApplicationScoped
-@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public interface MedTestsEndpoint {
 
     /**
-     * Endpoint to retrieve all medical test for given patient
+     * Endpoint to retrieve all medical test for given person
      *
-     * @param id the unique identifier of a patient
-     * @return list of all medical tests of the patient
+     * @param id the unique identifier of a person
+     * @return list of all medical tests of the person
      */
     @GET
-    @Path("/forUser/{id}")
+    @Path("/forPerson/{id}")
     List<MedTestDTO> findByPatientId(@PathParam Long id);
 
 	/**

@@ -76,11 +76,11 @@ public class DataHelper {
     }
 
     public static PersonMedRecord getPatientRecord() {
-        PersonDTO patient = new PersonDTO();
-        patient.name = "John";
-        patient.age = "28";
-        patient.address = "Some Address";
-        patient.telephone = "012345678";
-        return new PersonMedRecord(patient, List.of(), List.of());
+        PersonDTO person = new PersonDTO();
+        person.name = "John";
+        person.age = "28";
+        person.address = "Some Address";
+        person.telephone = "012345678";
+        return new PersonMedRecord(person, null, List.of());
     }
 }

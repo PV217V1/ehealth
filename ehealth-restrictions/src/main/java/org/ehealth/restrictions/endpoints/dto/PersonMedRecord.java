@@ -9,13 +9,13 @@ import java.util.List;
 public class PersonMedRecord {
 	public PersonDTO person;
 
-	public List<MedCertificateDTO> certificates;
+	public MedCertificateDTO certificate;
 
 	public List<MedTestDTO> tests;
 
-	public PersonMedRecord(PersonDTO person, List<MedCertificateDTO> medCerts, List<MedTestDTO> medTests) {
+	public PersonMedRecord(PersonDTO person, MedCertificateDTO medCert, List<MedTestDTO> medTests) {
 		this.person = person;
-		certificates = medCerts;
+		certificate = medCert;
 		tests = medTests;
 	}
 }
