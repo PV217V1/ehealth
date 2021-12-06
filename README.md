@@ -6,7 +6,7 @@ This project was created as a group assignment in the course PV217 Software Orie
 ### Team members:
 
 - Mr.Yanno Ban *(528066)*
-- Ms.Karolina Kokuchova *(456120)*
+- Karolina Kolouchova *(456120)*
 - Michal Hazdra *(469081)* 
 
 ## Overview
