@@ -20,6 +20,17 @@ public class Certificate extends PanacheEntity {
 
     public Integer doses;
 
+    public Certificate() {
+    }
+
+    public Certificate(Long personId, EVaccinationType vaxType, LocalDate vaxStarted, LocalDate vaxCompleted, Integer doses) {
+        this.personId = personId;
+        this.vaxType = vaxType;
+        this.vaxStarted = vaxStarted;
+        this.vaxCompleted = vaxCompleted;
+        this.doses = doses;
+    }
+
     public static Certificate findByPersonId(Long id) {
         return Certificate.find("personId", Sort.descending("vaxStarted"), id).firstResult();
     }

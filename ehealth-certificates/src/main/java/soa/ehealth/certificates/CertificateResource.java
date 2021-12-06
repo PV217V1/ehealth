@@ -1,5 +1,8 @@
 package soa.ehealth.certificates;
 
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import soa.ehealth.certificates.dto.CreateCertificateDto;
 import soa.ehealth.certificates.dto.ErrorDto;
 import soa.ehealth.certificates.entity.Certificate;
 
@@ -18,13 +21,20 @@ public class CertificateResource {
 
     @POST
     @Path("/create")
-    public Response create(Certificate certificate) {
-        Certificate created = repository.createCertificate(certificate);
+    @APIResponses({
+            @APIResponse(responseCode = "201", description = "Inserts the new certificate into a database")
+    })
+    public Response create(CreateCertificateDto certificate) {
+        Certificate created = repository.createCertificate(new Certificate(certificate.personId, certificate.vaxType, certificate.vaxStarted, certificate.vaxCompleted, certificate.doses));
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
     @PUT
     @Path("/{id}/update")
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Updates the certificate"),
+            @APIResponse(responseCode = "404", description = "Certificate with given id was not found")
+    })
     public Response update(@PathParam("id") Long id, Certificate update) {
         Certificate updated;
 
@@ -56,6 +66,10 @@ public class CertificateResource {
 
     @GET
     @Path("/{id}")
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Returns the certificate"),
+            @APIResponse(responseCode = "404", description = "Certificate with given id was not found")
+    })
     public Response getCertificate(@PathParam("id") Long id) {
         Certificate certificate = Certificate.findById(id);
 
@@ -71,6 +85,10 @@ public class CertificateResource {
 
     @GET
     @Path("/forPerson/{id}")
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Updates the certificate"),
+            @APIResponse(responseCode = "404", description = "Certificate for person with given id was not found")
+    })
     public Response getForPerson(@PathParam("id") Long id) {
         Certificate certificate = Certificate.findByPersonId(id);
 
