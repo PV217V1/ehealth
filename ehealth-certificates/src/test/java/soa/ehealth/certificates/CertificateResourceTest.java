@@ -82,7 +82,7 @@ public class CertificateResourceTest {
         given()
                 .when().get("/certificates/forPerson/12")
                 .then()
-                .statusCode(404);
+                .statusCode(204);
     }
 
     @Test

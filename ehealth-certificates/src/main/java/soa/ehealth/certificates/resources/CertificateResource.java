@@ -132,13 +132,13 @@ public class CertificateResource {
      * Retrieves certificate with data about its owner ({@link PersonCertificateDto}) based on the ID of the person to whom the certificate belongs
      *
      * @param id the ID of the person
-     * @return 200 on success, 404 if the certificate or person does not exist
+     * @return 200 on success, 204 if the certificate or person does not exist
      */
     @GET
     @Path("/forPerson/{id}")
     @APIResponses({
             @APIResponse(responseCode = "200", description = "Returns the certificate, with info about person (PersonCertificateDto)"),
-            @APIResponse(responseCode = "404", description = "Certificate or person was not found")
+            @APIResponse(responseCode = "204", description = "Certificate or person was not found")
     })
     @Timed(name = "certificates.getForPersonDuration", description = "How long it takes to retrieve a certificate for specific person.")
     @Counted(name = "certificates.getForPersonCalls", description = "How many times this endpoint was called.")
@@ -148,14 +148,14 @@ public class CertificateResource {
 
         if (certificate == null) {
             return Response
-                    .status(Response.Status.NOT_FOUND)
+                    .status(Response.Status.NO_CONTENT)
                     .entity(new ErrorDto("Certificate for person with id " + id + " not found"))
                     .build();
         }
 
         if (person == null) {
             return Response
-                    .status(Response.Status.NOT_FOUND)
+                    .status(Response.Status.NO_CONTENT)
                     .entity(new ErrorDto("Person with id " + id + " not found"))
                     .build();
         }
