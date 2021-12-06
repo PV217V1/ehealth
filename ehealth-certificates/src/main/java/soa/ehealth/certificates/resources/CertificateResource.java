@@ -1,5 +1,7 @@
 package soa.ehealth.certificates.resources;
 
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -39,6 +41,8 @@ public class CertificateResource {
     @APIResponses({
             @APIResponse(responseCode = "201", description = "Inserts the new certificate into a database")
     })
+    @Timed(name = "certificates.createDuration", description = "How long it takes to persist a certificate.")
+    @Counted(name = "certificates.createCalls", description = "How many times a certificate was created.")
     public Response create(CreateCertificateDto certificate) {
         Certificate created = certificateService.createCertificate(new Certificate(certificate.personId, certificate.vaxType, certificate.vaxStarted, certificate.vaxCompleted, certificate.doses));
         return Response.status(Response.Status.CREATED).entity(created).build();
@@ -57,6 +61,7 @@ public class CertificateResource {
             @APIResponse(responseCode = "200", description = "Updates the certificate"),
             @APIResponse(responseCode = "404", description = "Certificate with given id was not found")
     })
+    @Timed(name = "certificates.updateDuration", description = "How long it takes to update a certificate.")
     public Response update(@PathParam("id") Long id, Certificate update) {
         Certificate updated;
 
@@ -81,6 +86,7 @@ public class CertificateResource {
     @DELETE
     @Path("/{id}/delete")
     @Produces(MediaType.TEXT_PLAIN)
+    @Timed(name = "certificates.deleteDuration", description = "How long it takes to delete a certificate.")
     public Response delete(@PathParam("id") Long id) {
         boolean deleted = certificateService.deleteCertificate(id);
 
@@ -134,6 +140,8 @@ public class CertificateResource {
             @APIResponse(responseCode = "200", description = "Returns the certificate, with info about person (PersonCertificateDto)"),
             @APIResponse(responseCode = "404", description = "Certificate or person was not found")
     })
+    @Timed(name = "certificates.getForPersonDuration", description = "How long it takes to retrieve a certificate for specific person.")
+    @Counted(name = "certificates.getForPersonCalls", description = "How many times this endpoint was called.")
     public Response getForPerson(@PathParam("id") Long id) {
         Certificate certificate = Certificate.findByPersonId(id);
         PersonDto person = personService.findById(id);
