@@ -6,14 +6,29 @@ import java.time.LocalDate;
 
 public class CreateCertificateDto {
 
+    /**
+     * ID of vaccinated person
+     */
     public Long personId;
 
+    /**
+     * Type of vaccine
+     */
     public EVaccinationType vaxType;
 
+    /**
+     * Date when first dose was administered
+     */
     public LocalDate vaxStarted;
 
+    /**
+     * Date when final dose was administered
+     */
     public LocalDate vaxCompleted;
 
+    /**
+     * Number of doses administered
+     */
     public Integer doses;
 
     public CreateCertificateDto() {

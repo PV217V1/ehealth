@@ -1,4 +1,4 @@
-package soa.ehealth.certificates.entity;
+package soa.ehealth.certificates.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.panache.common.Sort;
@@ -10,14 +10,29 @@ import java.time.LocalDate;
 @Entity
 public class Certificate extends PanacheEntity {
 
+    /**
+     * ID of vaccinated person
+     */
     public Long personId;
 
+    /**
+     * Type of vaccine
+     */
     public EVaccinationType vaxType;
 
+    /**
+     * Date when first dose was administered
+     */
     public LocalDate vaxStarted;
 
+    /**
+     * Date when final dose was administered
+     */
     public LocalDate vaxCompleted;
 
+    /**
+     * Number of doses administered
+     */
     public Integer doses;
 
     public Certificate() {

@@ -1,10 +1,15 @@
-package soa.ehealth.certificates;
+package soa.ehealth.certificates.resources;
 
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import soa.ehealth.certificates.dto.CreateCertificateDto;
 import soa.ehealth.certificates.dto.ErrorDto;
-import soa.ehealth.certificates.entity.Certificate;
+import soa.ehealth.certificates.dto.PersonCertificateDto;
+import soa.ehealth.certificates.dto.PersonDto;
+import soa.ehealth.certificates.entities.Certificate;
+import soa.ehealth.certificates.services.CertificateService;
+import soa.ehealth.certificates.services.PersonService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -17,18 +22,35 @@ import java.util.List;
 public class CertificateResource {
 
     @Inject
-    CertificateRepository repository;
+    CertificateService certificateService;
 
+    @Inject
+    @RestClient
+    PersonService personService;
+
+    /**
+     * Creates new certificate
+     *
+     * @param certificate the {@link CreateCertificateDto} to persist
+     * @return 201 on success
+     */
     @POST
     @Path("/create")
     @APIResponses({
             @APIResponse(responseCode = "201", description = "Inserts the new certificate into a database")
     })
     public Response create(CreateCertificateDto certificate) {
-        Certificate created = repository.createCertificate(new Certificate(certificate.personId, certificate.vaxType, certificate.vaxStarted, certificate.vaxCompleted, certificate.doses));
+        Certificate created = certificateService.createCertificate(new Certificate(certificate.personId, certificate.vaxType, certificate.vaxStarted, certificate.vaxCompleted, certificate.doses));
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
+    /**
+     * Updates certificate
+     *
+     * @param id the ID of the certificate to be updated
+     * @param update the new data of the {@link Certificate}
+     * @return 200 on success, 404 if the certificate does not exist
+     */
     @PUT
     @Path("/{id}/update")
     @APIResponses({
@@ -39,7 +61,7 @@ public class CertificateResource {
         Certificate updated;
 
         try {
-            updated = repository.updateCertificate(id, update);
+            updated = certificateService.updateCertificate(id, update);
         } catch (NotFoundException e) {
             return Response
                     .status(Response.Status.NOT_FOUND)
@@ -50,20 +72,37 @@ public class CertificateResource {
         return Response.ok(updated).build();
     }
 
+    /**
+     * Deletes certificate
+     *
+     * @param id the ID of the certificate to be deleted
+     * @return 200 "true" on success, 200 "false" if the certificate was not deleted
+     */
     @DELETE
     @Path("/{id}/delete")
     @Produces(MediaType.TEXT_PLAIN)
     public Response delete(@PathParam("id") Long id) {
-        boolean deleted = repository.deleteCertificate(id);
+        boolean deleted = certificateService.deleteCertificate(id);
 
         return Response.ok(deleted).build();
     }
 
+    /**
+     * Retrieves all certificates
+     *
+     * @return 200 on success
+     */
     @GET
     public List<Certificate> getCertificates() {
         return Certificate.listAll();
     }
 
+    /**
+     * Retrieves certificate by its ID
+     *
+     * @param id the ID of the certificate to be returned
+     * @return 200 on success, 404 if the certificate does not exist
+     */
     @GET
     @Path("/{id}")
     @APIResponses({
@@ -83,14 +122,21 @@ public class CertificateResource {
         return Response.ok(certificate).build();
     }
 
+    /**
+     * Retrieves certificate with data about its owner ({@link PersonCertificateDto}) based on the ID of the person to whom the certificate belongs
+     *
+     * @param id the ID of the person
+     * @return 200 on success, 404 if the certificate or person does not exist
+     */
     @GET
     @Path("/forPerson/{id}")
     @APIResponses({
-            @APIResponse(responseCode = "200", description = "Updates the certificate"),
-            @APIResponse(responseCode = "404", description = "Certificate for person with given id was not found")
+            @APIResponse(responseCode = "200", description = "Returns the certificate, with info about person (PersonCertificateDto)"),
+            @APIResponse(responseCode = "404", description = "Certificate or person was not found")
     })
     public Response getForPerson(@PathParam("id") Long id) {
         Certificate certificate = Certificate.findByPersonId(id);
+        PersonDto person = personService.findById(id);
 
         if (certificate == null) {
             return Response
@@ -99,6 +145,13 @@ public class CertificateResource {
                     .build();
         }
 
-        return Response.ok(certificate).build();
+        if (person == null) {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorDto("Person with id " + id + " not found"))
+                    .build();
+        }
+
+        return Response.ok(new PersonCertificateDto(person, certificate)).build();
     }
 }

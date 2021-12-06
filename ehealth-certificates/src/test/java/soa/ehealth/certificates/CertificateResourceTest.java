@@ -3,7 +3,7 @@ package soa.ehealth.certificates;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import soa.ehealth.certificates.dto.CreateCertificateDto;
-import soa.ehealth.certificates.entity.Certificate;
+import soa.ehealth.certificates.entities.Certificate;
 import soa.ehealth.certificates.enums.EVaccinationType;
 
 import javax.transaction.Transactional;

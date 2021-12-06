@@ -1,13 +1,13 @@
-package soa.ehealth.certificates;
+package soa.ehealth.certificates.services;
 
-import soa.ehealth.certificates.entity.Certificate;
+import soa.ehealth.certificates.entities.Certificate;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class CertificateRepository {
+public class CertificateService {
 
     @Transactional
     public Certificate createCertificate(Certificate certificate) {
