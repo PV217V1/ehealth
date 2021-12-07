@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 @Path("/person")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PersonResouce {
+public class PersonResource {
     @Inject
     PeopleRepository peopleRepository;
 
@@ -48,6 +48,8 @@ public class PersonResouce {
         entity.setAge(person.getAge() );
         entity.setAddress(person.getAddress());
         entity.setTelephone(person.getTelephone());
+        entity.email = person.email;
+        entity.sex = person.sex;
         return entity;
     }
     @DELETE

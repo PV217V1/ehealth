@@ -17,8 +17,18 @@ public class Person {
     public String address;
     public String telephone;
     public String email;
+
     public Person() {
 
+    }
+
+    public Person(String name, String age, String sex, String address, String telephone, String email) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+        this.address = address;
+        this.telephone = telephone;
+        this.email = email;
     }
 
     public void setId(Long id) {
